@@ -215,10 +215,15 @@ exports.getEmployeeBanks = async (req, res)=>{
   const userId = decodedToken.id;
 
   const id = req.params.id;
+  const employeeWithUserId = await prisma.employee.findUnique({
+    where:{
+      id_user: id,
+    }
+  })
 
   try {
     const bankAccounts = await prisma.bankAccount.findMany({
-      where: { id_employee: id },
+      where: { id_employee: employeeWithUserId.id },
     });
 
     const bankMap = new Map();
