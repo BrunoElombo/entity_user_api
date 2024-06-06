@@ -1,9 +1,10 @@
 const express = require('express');
 const siteRoutes = express.Router();
-const { getAllSites } = require("../controllers/siteController");
+const { getEmployeeSites, getAllSites } = require("../controllers/siteController");
 
 const verifyJWT = require("../middlewear/verifyJWT");
 
-siteRoutes.get("/", getAllSites);
+siteRoutes.get("/", getEmployeeSites);
+siteRoutes.get("/all", getAllSites);
 
 module.exports = siteRoutes;

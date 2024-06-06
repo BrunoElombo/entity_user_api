@@ -11,6 +11,7 @@ const externalEntitiesRoutes = require("./routes/externalEntity");
 const sitesRoutes = require("./routes/site");
 const productRoutes = require("./routes/product");
 const bankRoutes = require("./routes/bank");
+const departmentRoutes = require("./routes/department");
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.use("/external_entities",externalEntitiesRoutes);
 app.use("/sites",sitesRoutes);
 app.use("/products", productRoutes);
 app.use("/banks", bankRoutes);
+app.use("/departments", departmentRoutes);
 
 // app.listen(process.env.PORT, ()=>{
 //     console.log(`Server listening on http://localhost:${process.env.PORT}`)

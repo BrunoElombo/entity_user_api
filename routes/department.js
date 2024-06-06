@@ -1,24 +1,30 @@
 const express = require("express");
-const router = express().Router()
+const router = express.Router()
 const PrismaClient = require('@prisma/client').PrismaClient;
+const jwt = require('jsonwebtoken');
 
 const prisma = new PrismaClient();
 
-app.post("/departments", (req, res) => {
+router.post("/", (req, res) => {
   const body = req.body;
   const response = prisma.department.create(body);
   res.send(response);
 })
 
-app.get('/departments', async (req, res) => {
+router.get('/', async (req, res) => {
+  const decodedToken = jwt.decode(req.headers.authorization.split(' ')[1]);
+  const userId = decodedToken.id;
+
+  const employee = await prisma.employee.findUnique({
+      where:{id_user: userId},
+      include: {
+        Function: true,
+        role: true,
+      }
+  });
     try {
       const departments = await prisma.department.findMany({
-        include: {
-          Entity: true,
-          user: {
-            select: { id: true },
-          },
-        },
+        where:{id_entity: employee.id_entity}
       });
       res.json(departments);
     } catch (error) {
@@ -27,7 +33,7 @@ app.get('/departments', async (req, res) => {
     }
 });
 
-app.get('/departments/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
 const { id } = req.params;
 try {
     const department = await prisma.department.findUnique({

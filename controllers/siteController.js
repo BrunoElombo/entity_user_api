@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 const jwt = require('jsonwebtoken');
 
 
-exports.getAllSites = async (req, res)=>{
+exports.getEmployeeSites = async (req, res)=>{
     try {
       const decodedToken = jwt.decode(req.headers.authorization.split(' ')[1]);
       const userId = decodedToken.id;
@@ -40,5 +40,32 @@ exports.getAllSites = async (req, res)=>{
     }
     // const decodedToken = jwt.decode(req.headers.authorization.split(' ')[1]);
     // const userId = decodedToken.id;
+
+}
+
+exports.getAllSites = async (req, res)=>{
+  try {
+    const decodedToken = jwt.decode(req.headers.authorization.split(' ')[1]);
+    const userId = decodedToken.id;
+
+    const employee = await prisma.employee.findUnique({
+        where:{id_user: userId},
+        include: {
+          Function: true,
+          role: true,
+        }
+    });
+
+    const sites = await prisma.site.findMany({
+      where:{id_entity: employee.id_entity}
+    });
+    
+    return res.status(200).json(sites);
+  } catch (error) {
+    console.log(error)
+      return res.status(500).json({ error: 'Internal server error' });
+  }
+  // const decodedToken = jwt.decode(req.headers.authorization.split(' ')[1]);
+  // const userId = decodedToken.id;
 
 }
