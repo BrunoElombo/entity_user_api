@@ -12,12 +12,14 @@ const sitesRoutes = require("./routes/site");
 const productRoutes = require("./routes/product");
 const bankRoutes = require("./routes/bank");
 const departmentRoutes = require("./routes/department");
+const cashDeskRoutes = require("./routes/cashDesk");
+const currencyRoutes = require("./routes/currency");
 
 const app = express();
 
 // const ipAddress = '172.19.131.1';
-// const ipAddress = '192.168.60.191';
-const ipAddress = '172.19.120.187';
+const ipAddress = '192.168.114.191';
+// const ipAddress = '172.19.120.187';
 
 const corsOptions = {
     origin: "*"
@@ -45,6 +47,8 @@ app.use("/sites",sitesRoutes);
 app.use("/products", productRoutes);
 app.use("/banks", bankRoutes);
 app.use("/departments", departmentRoutes);
+app.use("/cash-desk", cashDeskRoutes);
+app.use("/currencies", currencyRoutes);
 
 // app.listen(process.env.PORT, ()=>{
 //     console.log(`Server listening on http://localhost:${process.env.PORT}`)

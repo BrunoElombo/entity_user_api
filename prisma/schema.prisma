@@ -19,6 +19,7 @@ model User {
   profile_picture String?
   gender String?
   niu String?
+  displayName String?
 
   is_active Boolean @default(true)
   is_admin Boolean @default(false)
@@ -55,21 +56,29 @@ model Employee {
 
 model Role{
   id String @id @default(uuid())
+  createdAt DateTime @default(now())
   name String?
+  displayName String?
   power Int @default(0)
   employee Employee[]
+  isActive Boolean @default(true)
 }
 
 model EmployeeRole{
   id String @id @default(uuid())
   id_employee String
+  createdAt DateTime @default(now())
+  isActive Boolean @default(true)
   // Employee Employee @relation(fields: [id_employee], references: [id])
 }
 
 model Function {
   id       String  @id @default(uuid())
   name       String
+  displayName String?
   power      Int? @default(0)
+  createdAt DateTime @default(now())
+  isActive Boolean @default(true)
   
   employee Employee[]
 }
@@ -80,7 +89,9 @@ model Entity {
   raison_social String
   logo String?
   niu        String?
-
+  createdAt DateTime @default(now())
+  isActive Boolean @default(true)
+  displayName String?
   department Department[]
   employee Employee[]
   site Site[]
@@ -90,6 +101,7 @@ model Entity {
   associer Associer[]
   
   bankAccount BankAccount[]
+  cashDesks CashDesk []
 }
 
 
@@ -97,15 +109,20 @@ model Associer{
   id String @id @default(uuid())
   id_entity String
   id_external_entity String
+  isActive Boolean @default(true)
 
   entity Entity @relation(fields: [id_entity], references: [id])
   external_entity ExternalEntity @relation(fields: [id_external_entity], references: [id])
+  createdAt DateTime @default(now())
 }
 model ExternalEntity{
   id String @id @default(uuid())
+  isActive Boolean @default(true)
   name String
+  displayName String?
   id_entity String
   entity Entity @relation(fields: [id_entity], references: [id])
+  createdAt DateTime @default(now())
 
   type Type_Entity[]
   external_entity ExternalEntityBank[]
@@ -115,24 +132,29 @@ model ExternalEntity{
 
 model Type_Entity{
   id String @id @default(uuid())
+  isActive Boolean @default(true)
   id_entity String
   ExternalEntity ExternalEntity @relation(fields: [id_entity], references: [id], onDelete: Cascade)
   id_type String
   type Type @relation(fields: [id_type], references: [id], onDelete: Cascade)
-
+  createdAt DateTime @default(now())
 }
 
 model Type{
   id String @id @default(uuid())
+  isActive Boolean @default(true)
   name String?
 
   type Type_Entity[]
+  createdAt DateTime @default(now())
 }
 
 model Department {
   id       String  @id @default(uuid())
+  isActive Boolean @default(true)
   id_entity  String
   name String
+  displayName String?
   description String
   budget     Float?
   id_employee String?
@@ -140,49 +162,63 @@ model Department {
   User User? @relation(fields: [id_user], references: [id], onDelete: Cascade)
   Entity     Entity  @relation(fields: [id_entity], references: [id], onDelete: Cascade)
   employee Employee []
+  createdAt DateTime @default(now())
   // fonction Function[]
 }
 
 model Grade {
   id       String  @id @default(uuid())
+  isActive Boolean @default(true)
   name       String
+  displayName String?
   power Int @default(0)
   employee Employee[]
+  createdAt DateTime @default(now())
 }
 model EchelonCategory {
   id       String  @id @default(uuid())
+  isActive Boolean @default(true)
   name       String
+  displayName String?
   category   String
   power Int @default(0)
   employee Employee[]
+  createdAt DateTime @default(now())
 }
 
 model Site{
   id String @id @default(uuid())
+  isActive Boolean @default(true)
   name String
+  displayName String?
   type TypeSite @default(ONFIELD)
   id_entity String
   Entity Entity @relation(fields: [id_entity], references: [id])
+  createdAt DateTime @default(now())
 }
 
 model EntityBank{
   id String @id @default(uuid())
 
+  isActive Boolean @default(true)
   id_entity String
   entity Entity @relation(fields: [id_entity], references: [id])
 
   id_bank String
   bank Bank @relation(fields: [id_bank], references: [id])
+  createdAt DateTime @default(now())
 }
 
 model ExternalEntityBank{
   id String @id @default(uuid())
+  isActive Boolean @default(true)
 
   id_external_entity String
   external_entity ExternalEntity @relation(fields: [id_external_entity], references: [id])
 
   id_bank String
   bank Bank @relation(fields: [id_bank], references: [id])
+  createdAt DateTime @default(now())
 }
 
 model EmployeeBank{
@@ -193,13 +229,18 @@ model EmployeeBank{
 
   id_bank String
   bank Bank @relation(fields: [id_bank], references: [id])
+  createdAt DateTime @default(now())
+  isActive Boolean @default(true)
 }
 
 model Bank{
   id String @id @default(uuid())
   name String
+  displayName String?
   sigle String
   Acronyme String
+  createdAt DateTime @default(now())
+  isActive Boolean @default(true)
 
   bank_account BankAccount[]
   entity_bank EntityBank[]
@@ -224,20 +265,67 @@ model BankAccount{
 
   id_bank String
   Bank Bank @relation(fields: [id_bank], references: [id])
+  createdAt DateTime @default(now())
+  isActive Boolean @default(true)
 }
 
 
 model Product{
   id String @id @default(uuid())
   name String
+  displayName String?
   unit Float?
   description String
   id_entity String
   Entity Entity @relation(fields: [id_entity], references: [id])
+  createdAt DateTime @default(now())
+  isActive Boolean @default(true)
+}
+
+model CashDesk{
+  id String @id @default(uuid())
+  name String
+  displayName String?
+  amount Float?
+
+  idEntity String
+  entity Entity @relation(fields: [idEntity], references: [id])
+  createdAt DateTime @default(now())
+  isActive Boolean @default(true)
+}
+
+// Currency
+model Currency{
+  id String @id @default(uuid())
+
+  code String
+  name String
+  displayName String?
+  symbol String
+
+  currencyCuts CurrencyCuts[]
+  isActive Boolean @default(true)
+  createdAt DateTime @default(now())
+}
+
+model CurrencyCuts{
+  id String @id @default(uuid())
+  value Float
+  type CurrencyType
+
+  currencyId String
+  currency Currency @relation(fields: [currencyId], references: [id])
+  createdAt DateTime @default(now())
+  isActive Boolean @default(true)
 }
 
 
 enum TypeSite {
   HEADQUARTER 
   ONFIELD
+}
+
+enum CurrencyType {
+  CASH
+  COIN
 }
