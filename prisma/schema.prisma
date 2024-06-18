@@ -51,8 +51,9 @@ model Employee {
 
   employee_bank EmployeeBank[]
   bankAccount BankAccount[]
-}
 
+  account Account[]
+}
 
 model Role{
   id String @id @default(uuid())
@@ -92,6 +93,7 @@ model Entity {
   createdAt DateTime @default(now())
   isActive Boolean @default(true)
   displayName String?
+
   department Department[]
   employee Employee[]
   site Site[]
@@ -102,8 +104,9 @@ model Entity {
   
   bankAccount BankAccount[]
   cashDesks CashDesk []
-}
 
+  account Account[]
+}
 
 model Associer{
   id String @id @default(uuid())
@@ -115,6 +118,7 @@ model Associer{
   external_entity ExternalEntity @relation(fields: [id_external_entity], references: [id])
   createdAt DateTime @default(now())
 }
+
 model ExternalEntity{
   id String @id @default(uuid())
   isActive Boolean @default(true)
@@ -128,6 +132,7 @@ model ExternalEntity{
   external_entity ExternalEntityBank[]
   associer Associer[]
   bankAccount BankAccount[]
+  account Account[]
 }
 
 model Type_Entity{
@@ -269,6 +274,23 @@ model BankAccount{
   isActive Boolean @default(true)
 }
 
+model Account {
+  id String @id @default(uuid())
+  type AccountType @default(MOBILE)
+  name String @unique
+  displayName String?
+  amount Float? @default(0.0)
+  createdAt DateTime @default(now())
+
+  idEntity String?
+  entity Entity? @relation(fields: [idEntity], references: [id])
+
+  idEmployee String?
+  employee Employee? @relation(fields: [idEmployee], references: [id])
+
+  idExternalEntity String?
+  externalEntity ExternalEntity? @relation(fields: [idExternalEntity], references: [id])
+}
 
 model Product{
   id String @id @default(uuid())
@@ -325,7 +347,13 @@ enum TypeSite {
   ONFIELD
 }
 
+
 enum CurrencyType {
   CASH
   COIN
+}
+
+enum AccountType {
+  MOBILE
+  CRYPTO
 }

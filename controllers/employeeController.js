@@ -25,7 +25,19 @@ exports.getEmployeeHierarchy = async (req, res) => {
         ]
       },
       select:{
-        User: true,
+        User:{
+          select:{
+            id: true,
+            name: true,
+            email: true,
+            phone: true,
+            profile_picture: true,
+            gender: true,
+            niu: true,
+            is_admin: true,
+            is_staff: true
+          }
+        },
         role:true,
         Function: true
       }
@@ -158,7 +170,6 @@ exports.getEmployeeEntities = async (req, res)=>{
         }
       });
 
-      console.log(employeeInEntity)
       res.status(200).send(employeeInEntity);
     } catch (error) {
       console.log(error)

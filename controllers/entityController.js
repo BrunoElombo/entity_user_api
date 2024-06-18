@@ -333,7 +333,19 @@ const EntityController = {
         }
       },
       include: {
-        User: true
+        User: {
+          select:{
+            id: true,
+            name: true,
+            email: true,
+            phone: true,
+            profile_picture: true,
+            gender: true,
+            niu: true,
+            is_admin: true,
+            is_staff: true
+          }
+        }
       }
     });
   },
@@ -352,7 +364,19 @@ const EntityController = {
         }
       },
       include: {
-        User: true
+        User: {
+          select:{
+            id: true,
+            name: true,
+            email: true,
+            phone: true,
+            profile_picture: true,
+            gender: true,
+            niu: true,
+            is_admin: true,
+            is_staff: true
+          }
+        }
       }
     });
   },

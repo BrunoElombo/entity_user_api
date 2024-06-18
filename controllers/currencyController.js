@@ -1,6 +1,6 @@
 const PrismaClient = require('@prisma/client').PrismaClient;
 const prisma = new PrismaClient();
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken' );
 
 
 exports.getCurrencies = async (req, res)=>{
