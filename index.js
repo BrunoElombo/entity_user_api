@@ -15,6 +15,7 @@ const departmentRoutes = require("./routes/department");
 const cashDeskRoutes = require("./routes/cashDesk");
 const currencyRoutes = require("./routes/currency");
 const fileRoutes = require("./routes/file"); 
+const accountRoutes = require("./routes/account");
 const path = require('path');
 
 const app = express();
@@ -43,6 +44,7 @@ app.get("/", (req, res)=>{
 });
 
 app.use("/api", authRoutes);
+app.use("/account", accountRoutes);
 app.use("/users", userRoutes);
 app.use("/employees", employeeRoutes);
 app.use("/entities",entitiesRoutes);

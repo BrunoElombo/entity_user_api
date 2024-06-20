@@ -258,6 +258,8 @@ model BankAccount{
   
   account_number String
   amount String
+
+  cardNumber String?
   
   id_employee String?
   employee Employee? @relation(fields: [id_employee], references: [id])
@@ -290,6 +292,7 @@ model Account {
 
   idExternalEntity String?
   externalEntity ExternalEntity? @relation(fields: [idExternalEntity], references: [id])
+  isActive Boolean @default(true)
 }
 
 model Product{
