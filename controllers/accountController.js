@@ -1,5 +1,6 @@
 const PrismaClient = require('@prisma/client').PrismaClient;
 const prisma = new PrismaClient();
+const { AccountType } = require('@prisma/client');
 const jwt = require('jsonwebtoken');
 
 exports.getAllEntityAccounts=async(req, res)=>{
@@ -8,7 +9,7 @@ exports.getAllEntityAccounts=async(req, res)=>{
     const userId = decodedToken.id;
 
     // Get the query parameters "types"
-    let  { type } = req.query;
+    let  { type, operator } = req.query;
 
     try {
         let employee = await prisma.employee.findUnique({
@@ -18,6 +19,11 @@ exports.getAllEntityAccounts=async(req, res)=>{
 
         if(type){
             let account = await getAccountByType(idEntity, type);
+            return res.send(account);
+        }
+
+        if(operator){
+            let account = await getAccountByOperator(idEntity, operator);
             return res.send(account);
         }
 
@@ -42,12 +48,18 @@ exports.getAccountById=(req, res)=>{
 
 const getAccountByType = async (idEntity, type)=>{
     try{
-        let account = await prisma.account.findMany({
-            where:{type: type?.toUpperCase(), idEntity: idEntity}
+        let accountType = type.toUpperCase();
+        let operator = await prisma.operator.findMany({
+            where:{type: accountType}
         });
+
+
+        let account = await prisma.account.findMany({
+            where:{idOperator: operator.id, idEntity: idEntity}
+        });
+
         return account;
     }catch(e){
-        console.error(e);
-        return res.send(500);
+        throw new Error(e.message);
     }
 }

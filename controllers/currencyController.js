@@ -10,6 +10,7 @@ exports.getCurrencies = async (req, res)=>{
       const userId = decodedToken.id;
 
       const currencies = await prisma.Currency.findMany({
+        
         where:{
             isActive: true
         },
