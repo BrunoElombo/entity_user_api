@@ -25,7 +25,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // const ipAddress = '172.19.131.1';
 // const ipAddress = '192.168.114.191';
 // const ipAddress = '192.168.169.191';
-// const ipAddress = '172.19.120.187';
+const ipAddress = '172.19.120.187';
 
 const corsOptions = {
     origin: "*"
@@ -59,9 +59,9 @@ app.use("/cash-desk", cashDeskRoutes);
 app.use("/currencies", currencyRoutes);
 app.use("/file", fileRoutes);
 
-app.listen(process.env.PORT, ()=>{
-    console.log(`Server listening on http://localhost:${process.env.PORT}`)
-})
-// app.listen(process.env.PORT, process.env.ADDRESS, ()=>{
-//     console.log(`Server listening on http://${process.env.ADDRESS}:${process.env.PORT}`)
+// app.listen(process.env.PORT, ()=>{
+//     console.log(`Server listening on http://localhost:${process.env.PORT}`)
 // })
+app.listen(process.env.PORT, process.env.ADDRESS, ()=>{
+    console.log(`Server listening on http://${process.env.ADDRESS}:${process.env.PORT}`)
+})
