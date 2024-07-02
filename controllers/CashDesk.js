@@ -18,8 +18,6 @@ exports.getCashDesks = async (req, res)=>{
           idEntity: employee.id_entity
         },
       });
-
-
       return res.status(200).json(entityCashDesks);
     } catch (error) {
         console.log(error)
