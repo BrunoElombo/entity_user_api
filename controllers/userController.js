@@ -17,8 +17,16 @@ const jwt = require('jsonwebtoken');
         },
         include: {
           User: {
-            omit:{
-              password: true
+            select:{
+              id: true,
+              name: true,
+              email: true,
+              phone: true,
+              profile_picture: true,
+              gender: true,
+              niu: true,
+              is_admin: true,
+              is_staff: true
             }
           },
           entity:{
