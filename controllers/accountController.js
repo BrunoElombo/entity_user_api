@@ -50,9 +50,13 @@ const getAccountByType = async (idEntity, type)=>{
     try{
         let accountType = type.toUpperCase();
         let operator = await prisma.operator.findMany({
-            where:{type: accountType}
+            where:{
+                type: {
+                    equals: accountType,
+                    mode: 'insensitive'
+                }
+            }
         });
-
 
         let account = await prisma.account.findMany({
             where:{idOperator: operator.id, idEntity: idEntity}

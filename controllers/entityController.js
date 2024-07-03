@@ -156,16 +156,8 @@ const EntityController = {
 
       const userInfo = await prisma.user.findUnique({
         where:{id: userId},
-        select:{
-          id: true,
-          name: true,
-          email: true,
-          phone: true,
-          profile_picture: true,
-          gender: true,
-          niu: true,
-          is_admin: true,
-          is_staff: true,
+        omit:{
+          password: true
         },
       });
 
@@ -186,16 +178,8 @@ const EntityController = {
           department: {
             include: {
               User: {
-                select:{
-                  id:true,
-                  name: true,
-                  email: true,
-                  phone: true,
-                  profile_picture: true,
-                  gender: true,
-                  niu: true,
-                  is_admin: true,
-                  is_staff: true
+                omit:{
+                  password:true
                 }
               }, // Include the User model associated with the department
             },
@@ -207,16 +191,8 @@ const EntityController = {
                   Employee:{
                     include: {
                       User: {
-                        select:{
-                          id:true,
-                          name: true,
-                          email: true,
-                          phone: true,
-                          profile_picture: true,
-                          gender: true,
-                          niu: true,
-                          is_admin: true,
-                          is_staff: true
+                        omit:{
+                          passowrd:true
                         }
                       }
                     }
@@ -314,16 +290,8 @@ const EntityController = {
       },
       include: {
         User: {
-          select:{
-            id: true,
-            name: true,
-            email: true,
-            phone: true,
-            profile_picture: true,
-            gender: true,
-            niu: true,
-            is_admin: true,
-            is_staff: true
+          omit:{
+            password: true
           }
         }
       }
@@ -345,16 +313,8 @@ const EntityController = {
       },
       include: {
         User: {
-          select:{
-            id: true,
-            name: true,
-            email: true,
-            phone: true,
-            profile_picture: true,
-            gender: true,
-            niu: true,
-            is_admin: true,
-            is_staff: true
+          omit:{
+            password: true
           }
         }
       }
@@ -392,16 +352,8 @@ const EntityController = {
                 employee:{
                   include:{
                     User:{
-                      select:{
-                        id: true,
-                        name: true,
-                        email: true,
-                        phone: true,
-                        profile_picture: true,
-                        gender: true,
-                        niu: true,
-                        is_admin: true,
-                        is_staff: true
+                      omit:{
+                        password: true
                       }
                     },
                   }
@@ -411,16 +363,8 @@ const EntityController = {
             Departement:{
               include:{
                 User:{
-                  select:{
-                    id: true,
-                    name: true,
-                    email: true,
-                    phone: true,
-                    profile_picture: true,
-                    gender: true,
-                    niu: true,
-                    is_admin: true,
-                    is_staff: true
+                  omit:{
+                    password: true
                   }
                 },
               }

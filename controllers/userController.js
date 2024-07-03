@@ -17,16 +17,8 @@ const jwt = require('jsonwebtoken');
         },
         include: {
           User: {
-            select:{
-              id: true,
-              name: true,
-              email: true,
-              phone: true,
-              profile_picture: true,
-              gender: true,
-              niu: true,
-              is_admin: true,
-              is_staff: true
+            omit:{
+              password: true
             }
           },
           entity:{
@@ -67,7 +59,7 @@ const jwt = require('jsonwebtoken');
   };
   
   exports.createUser = async (req, res) => {
-    const { username, password, isAdmin, email, phone } = req.body;
+    const { username, password, is_admin, is_staff, email, phone } = req.body;
     
     try {
       if(!username || !password){
@@ -76,9 +68,10 @@ const jwt = require('jsonwebtoken');
       const hashedPassword = await bcrypt.hash(password, 10);
       const user = await prisma.user.create({
         data: {
-          name:username,
+          name: username,
           password: hashedPassword,
-          isAdmin,
+          is_admin,
+          is_staff,
           email,
           phone
         },
