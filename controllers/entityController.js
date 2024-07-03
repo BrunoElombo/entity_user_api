@@ -47,14 +47,8 @@ const EntityController = {
           },
           include:{
             User: {
-              select:{
-                id: true,
-                name:true,
-                email: true,
-                phone:true,
-                is_admin: true,
-                is_staff: true,
-                niu: true
+              omit:{
+                password: true
               }
             }
           }
@@ -87,14 +81,8 @@ const EntityController = {
             },
             include:{
               User: {
-                select:{
-                  id: true,
-                  name:true,
-                  email: true,
-                  phone:true,
-                  is_admin: true,
-                  is_staff: true,
-                  niu: true
+                omit:{
+                  password: true,
                 }
               }
             }
@@ -124,16 +112,8 @@ const EntityController = {
         },
         include: {
           User: {
-            select:{
-              id: true,
-              name: true,
-              email: true,
-              phone: true,
-              profile_picture: true,
-              gender: true,
-              niu: true,
-              is_admin: true,
-              is_staff: true
+            omit:{
+              password: true,
             }
           },
           entity:true,
