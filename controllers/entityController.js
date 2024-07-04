@@ -47,8 +47,16 @@ const EntityController = {
           },
           include:{
             User: {
-              omit:{
-                password: true
+              select:{
+                id: true,
+                name: true,
+                email: true,
+                phone: true,
+                profile_picture: true,
+                gender: true,
+                niu: true,
+                is_admin: true,
+                is_staff: true
               }
             }
           }
@@ -81,8 +89,16 @@ const EntityController = {
             },
             include:{
               User: {
-                omit:{
-                  password: true,
+                select:{
+                  id: true,
+                  name: true,
+                  email: true,
+                  phone: true,
+                  profile_picture: true,
+                  gender: true,
+                  niu: true,
+                  is_admin: true,
+                  is_staff: true
                 }
               }
             }
@@ -112,8 +128,16 @@ const EntityController = {
         },
         include: {
           User: {
-            omit:{
-              password: true,
+            select:{
+              id: true,
+              name: true,
+              email: true,
+              phone: true,
+              profile_picture: true,
+              gender: true,
+              niu: true,
+              is_admin: true,
+              is_staff: true
             }
           },
           entity:true,
@@ -178,8 +202,16 @@ const EntityController = {
           department: {
             include: {
               User: {
-                omit:{
-                  password:true
+                select:{
+                  id: true,
+                  name: true,
+                  email: true,
+                  phone: true,
+                  profile_picture: true,
+                  gender: true,
+                  niu: true,
+                  is_admin: true,
+                  is_staff: true
                 }
               }, // Include the User model associated with the department
             },
@@ -191,8 +223,16 @@ const EntityController = {
                   Employee:{
                     include: {
                       User: {
-                        omit:{
-                          passowrd:true
+                        select:{
+                          id: true,
+                          name: true,
+                          email: true,
+                          phone: true,
+                          profile_picture: true,
+                          gender: true,
+                          niu: true,
+                          is_admin: true,
+                          is_staff: true
                         }
                       }
                     }
@@ -290,8 +330,16 @@ const EntityController = {
       },
       include: {
         User: {
-          omit:{
-            password: true
+          select:{
+            id: true,
+            name: true,
+            email: true,
+            phone: true,
+            profile_picture: true,
+            gender: true,
+            niu: true,
+            is_admin: true,
+            is_staff: true
           }
         }
       }
@@ -313,8 +361,16 @@ const EntityController = {
       },
       include: {
         User: {
-          omit:{
-            password: true
+          select:{
+            id: true,
+            name: true,
+            email: true,
+            phone: true,
+            profile_picture: true,
+            gender: true,
+            niu: true,
+            is_admin: true,
+            is_staff: true
           }
         }
       }
@@ -352,8 +408,16 @@ const EntityController = {
                 employee:{
                   include:{
                     User:{
-                      omit:{
-                        password: true
+                      select:{
+                        id: true,
+                        name: true,
+                        email: true,
+                        phone: true,
+                        profile_picture: true,
+                        gender: true,
+                        niu: true,
+                        is_admin: true,
+                        is_staff: true
                       }
                     },
                   }
@@ -363,8 +427,16 @@ const EntityController = {
             Departement:{
               include:{
                 User:{
-                  omit:{
-                    password: true
+                  select:{
+                    id: true,
+                    name: true,
+                    email: true,
+                    phone: true,
+                    profile_picture: true,
+                    gender: true,
+                    niu: true,
+                    is_admin: true,
+                    is_staff: true
                   }
                 },
               }

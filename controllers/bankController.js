@@ -11,7 +11,7 @@ exports.getEmployeeBanks = async (req, res)=>{
           where:{id_user: userId, is_active:true}
       });
 
-      const employeeBanks = await prisma.EmployeeBank.findMany({
+      const employeeBanks = await prisma.employeeBank.findMany({
         where:{
           id_employee: employee.id
         },

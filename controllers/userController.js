@@ -39,15 +39,6 @@ const jwt = require('jsonwebtoken');
           Departement:true
         },
       });
-
-      console.log(employee);
-  
-      // if (!employee) {
-      //   return res.status(200).json({ employee });
-      // }
-  
-      // Extract entities from the employee's departments
-      // const entities = employee.Departement.map((department) => department.Entity);
   
       return res.status(200).json(employee);
     } catch (error) {
