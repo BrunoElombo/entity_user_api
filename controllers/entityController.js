@@ -402,6 +402,7 @@ const EntityController = {
                   {name:"paymaster_general"},
                   {name:"cordinator"},
                   {name:"cashier"},
+                  {name:"bank_mandate"},
                 ]
               },
               include:{
