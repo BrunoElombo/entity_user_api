@@ -128,6 +128,7 @@ exports.getEmployeeEntities = async (req, res)=>{
                 {name:"paymaster_general"},
                 {name:"cordinator"},
                 {name:"cashier"},
+                {name:"management_controller"},
                 {name:"bank_mandate"},
               ]
             },
