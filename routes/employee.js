@@ -5,6 +5,7 @@ const verifyJWT = require("../middlewear/verifyJWT")
 
 
 employeeRouter.get('/hierarchy', verifyJWT, employeeController.getEmployeeHierarchy);
+employeeRouter.get('/mandatory', verifyJWT, employeeController.getEmployeeMandatory);
 employeeRouter.get('/controllers', verifyJWT, employeeController.getEmployeeControllers);
 employeeRouter.get('/:employeeId/colleagues', verifyJWT, employeeController.getEmployeeColleagues);
 employeeRouter.get('/:entity_id/entities', verifyJWT, employeeController.getEmployeeEntities);

@@ -81,6 +81,42 @@ exports.getEmployeeHierarchy = async (req, res) => {
   }
 
 };
+
+exports.getEmployeeMandatory = async (req, res) => {
+  try {
+    const decodedToken = jwt.decode(req.headers.authorization.split(' ')[1]);
+    const userId = decodedToken.id;
+    
+    const currentUser = await prisma.employee.findUnique({
+      where:{
+        id_user: userId, is_active: true
+      }
+    });
+
+    const role = await prisma.role.findFirst({
+      where:{name: 'bank_mandate', isActive: true}
+    });
+
+    const employee = await prisma.employee.findMany({
+      where:{id_entity: currentUser.id_entity, id_role: role.id},
+      select:{
+        User:{
+          select:{
+            id: true,
+            name: true
+          }
+        }
+      }
+    });
+
+    return res.send(employee);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+
+};
   
 exports.getEmployeeColleagues = async (req, res) => {
   const { employeeId } = req.params;

@@ -11,7 +11,6 @@ exports.getAllDepartments = async (req, res) => {
   }
 };
 
-
 exports.getDepartmentById = async (req, res) => {
   try {
     const { id } = req.params;

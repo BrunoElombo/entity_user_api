@@ -59,9 +59,9 @@ app.use("/cash-desk", cashDeskRoutes);
 app.use("/currencies", currencyRoutes);
 app.use("/file", fileRoutes);
 
-// app.listen(process.env.PORT, ()=>{
-//     console.log(`Server listening on http://localhost:${process.env.PORT}`)
-// })
-app.listen(process.env.PORT, process.env.ADDRESS, ()=>{
-    console.log(`Server listening on http://${process.env.ADDRESS}:${process.env.PORT}`)
+app.listen(process.env.PORT, ()=>{
+    console.log(`Server listening on http://localhost:${process.env.PORT}`)
 })
+// app.listen(process.env.PORT, process.env.ADDRESS, ()=>{
+//     console.log(`Server listening on http://${process.env.ADDRESS}:${process.env.PORT}`)
+// })
