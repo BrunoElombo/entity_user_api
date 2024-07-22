@@ -1,7 +1,7 @@
 const express = require("express");
 const employeeRouter = express.Router()
 const employeeController = require("../controllers/employeeController")
-const verifyJWT = require("../middlewear/verifyJWT")
+const verifyJWT = require("../middlewares/verifyJWT")
 
 
 employeeRouter.get('/hierarchy', verifyJWT, employeeController.getEmployeeHierarchy);
@@ -11,6 +11,15 @@ employeeRouter.get('/:employeeId/colleagues', verifyJWT, employeeController.getE
 employeeRouter.get('/:entity_id/entities', verifyJWT, employeeController.getEmployeeEntities);
 employeeRouter.get('/:id/banks', verifyJWT, employeeController.getEmployeeBanks)
 employeeRouter.get('/',verifyJWT, employeeController.getEmployeeByEntity);
+
+// Updates
+// const employeeController = require('../controllers/employeeController');
+const { validateEmployee, validateEmployeeUpdate } = require('../validations/employeeValidation');
+
+employeeRouter.post('/create', validateEmployee, employeeController.createEmployee);
+employeeRouter.get('/profile', employeeController.getEmployeeProfile);
+employeeRouter.put('/update', validateEmployeeUpdate, employeeController.updateEmployeeProfile);
+employeeRouter.delete('/delete', employeeController.deleteEmployee);
 
 
 module.exports = employeeRouter;

@@ -1,4 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
+// controllers/entityController.js
+const entityService = require('../services/entityService');
 const jwt = require('jsonwebtoken');
 
 const prisma = new PrismaClient();
@@ -498,12 +500,50 @@ const EntityController = {
 };
 
 
-const getEmployeesByRole=async (res, req)=>{
+// Updates
+exports.createEntity = async (req, res) => {
+  try {
+    const entity = await entityService.createEntity(req.body);
+    res.status(201).json(entity);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 
-}
+exports.getAllEntities = async (req, res) => {
+  try {
+    const entities = await entityService.getAllEntities();
+    res.json(entities);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-const getEmployeeByFunction = async (res, req)=>{
-    
-}
+exports.getEntityById = async (req, res) => {
+  try {
+    const entity = await entityService.getEntityById(req.params.id);
+    res.json(entity);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+
+exports.updateEntity = async (req, res) => {
+  try {
+    const entity = await entityService.updateEntity(req.params.id, req.body);
+    res.json(entity);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+exports.deleteEntity = async (req, res) => {
+  try {
+    await entityService.deleteEntity(req.params.id);
+    res.status(204).send();
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
 
 module.exports = EntityController;

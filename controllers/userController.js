@@ -93,3 +93,57 @@ const jwt = require('jsonwebtoken');
       return res.status(500).json({ message: 'Server error' });
     }
   };
+
+
+  // Updates
+
+  // controllers/userController.js
+const userService = require('../services/userService');
+
+exports.register = async (req, res) => {
+  try {
+    const user = await userService.createUser(req.body);
+    res.status(201).json(user);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+exports.login = async (req, res) => {
+  try {
+    const { name, password } = req.body;
+    const { user, token } = await userService.loginUser(name, password);
+    res.json({ user, token });
+  } catch (error) {
+    res.status(401).json({ error: error.message });
+  }
+};
+
+exports.getProfile = async (req, res) => {
+  try {
+    const user = await userService.getUserById(req.user.id);
+    res.json(user);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+
+exports.updateProfile = async (req, res) => {
+  let { id } = req.params;
+  let userData = await req.body
+  try {
+    const user = await userService.updateUser(id, userData);
+    res.json(user);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  try {
+    await userService.deleteUser(req.user.id);
+    res.status(204).send();
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};

@@ -1,6 +1,6 @@
 const express = require("express");
 const accountRouter = express.Router();
-const verifyJWT = require("../middlewear/verifyJWT");
+const verifyJWT = require("../middlewares/verifyJWT");
 const {getAllEntityAccounts} = require("../controllers/accountController");
 
 accountRouter.get("/", verifyJWT, getAllEntityAccounts);

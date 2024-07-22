@@ -343,3 +343,44 @@ exports.getEmployeeByEntity = async (req, res)=>{
     return res.status(500).send(error.message);
   }
 }
+
+
+// Updates 
+// controllers/employeeController.js
+const employeeService = require('../services/employeeService');
+
+exports.createEmployee = async (req, res) => {
+  try {
+    const employee = await employeeService.createEmployee(req.body);
+    res.status(201).json(employee);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+exports.getEmployeeProfile = async (req, res) => {
+  try {
+    const employee = await employeeService.getEmployeeById(req.employee.id);
+    res.json(employee);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+
+exports.updateEmployeeProfile = async (req, res) => {
+  try {
+    const employee = await employeeService.updateEmployee(req.employee.id, req.body);
+    res.json(employee);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+exports.deleteEmployee = async (req, res) => {
+  try {
+    await employeeService.deleteEmployee(req.employee.id);
+    res.status(204).send();
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};

@@ -1,0 +1,9 @@
+20240721	19:43:39	5a8266de-5b28-4759-91cb-b093493c478d	GET	undefined	/
+20240721	19:43:40	a0d3226c-3b50-43f4-901d-b9d607717da1	GET	undefined	/favicon.ico
+20240721	19:44:36	1a27aed6-a9a8-4f82-bee1-1e980d0e7bc4	GET	undefined	/users/
+20240721	19:45:18	e1485270-16e5-4ce9-88f8-c1fe8322d2c2	GET	undefined	/users/
+20240721	19:45:41	318341c2-6ddf-4765-b827-7be1292ab91e	GET	undefined	/
+20240721	19:54:46	02fffafb-460d-4a02-b528-587aad06973c	GET	undefined	/api/users
+20240721	19:55:28	52c221d1-7406-47e5-8280-fef252a86f8e	GET	https://www.google.com	/api/users
+20240721	20:50:18	de8c7f39-a670-400a-acf8-1289f2341fb3	GET	undefined	/
+20240721	20:50:47	558ba72a-c361-4d3d-b8e9-b40977aa9eee	GET	undefined	/bruno
