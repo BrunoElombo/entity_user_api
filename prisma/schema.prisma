@@ -28,10 +28,13 @@ model User {
 
   employee Employee? 
   Department Department[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isActive Boolean @default(true)
 }
 
 model Employee {
-
   id             String  @id @default(uuid())
   id_level       String
   id_grade       String
@@ -40,7 +43,6 @@ model Employee {
   id_entity String
   id_function String?
   id_role String?
-  is_active Boolean @default(true)
   
   entity Entity @relation(fields: [id_entity], references: [id])
   Function Function? @relation(fields: [id_function], references: [id])
@@ -52,24 +54,32 @@ model Employee {
 
   employee_bank EmployeeBank[]
   bankAccount BankAccount[]
-
   account Account[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isActive Boolean @default(true)
 }
 
 model Role{
   id String @id @default(uuid())
-  createdAt DateTime @default(now())
   name String?
   displayName String?
   power Int @default(0)
+
   employee Employee[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   isActive Boolean @default(true)
 }
 
 model EmployeeRole{
   id String @id @default(uuid())
   id_employee String
+  
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   isActive Boolean @default(true)
   // Employee Employee @relation(fields: [id_employee], references: [id])
 }
@@ -79,10 +89,12 @@ model Function {
   name       String
   displayName String?
   power      Int? @default(0)
-  createdAt DateTime @default(now())
-  isActive Boolean @default(true)
-  
+
   employee Employee[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isActive Boolean @default(true)
 }
 
 model Entity {
@@ -91,8 +103,6 @@ model Entity {
   raison_social String
   logo String?
   niu        String?
-  createdAt DateTime @default(now())
-  isActive Boolean @default(true)
   displayName String?
 
   department Department[]
@@ -101,63 +111,70 @@ model Entity {
   Product Product[]
   entity_bank EntityBank []
   external_entity ExternalEntity[]
-  associer Associer[]
-  
+  Associate Associate[]
   bankAccount BankAccount[]
   cashDesks CashDesk []
-
   account Account[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isActive Boolean @default(true)
 }
 
-model Associer{
+model Associate{
   id String @id @default(uuid())
   id_entity String
   id_external_entity String
-  isActive Boolean @default(true)
-
   entity Entity @relation(fields: [id_entity], references: [id])
   external_entity ExternalEntity @relation(fields: [id_external_entity], references: [id])
+  
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isActive Boolean @default(true)
 }
 
 model ExternalEntity{
   id String @id @default(uuid())
-  isActive Boolean @default(true)
   name String
   displayName String?
   id_entity String
   entity Entity @relation(fields: [id_entity], references: [id])
-  createdAt DateTime @default(now())
 
   type Type_Entity[]
   external_entity ExternalEntityBank[]
-  associer Associer[]
+  Associate Associate[]
   bankAccount BankAccount[]
   account Account[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isActive Boolean @default(true)
 }
 
 model Type_Entity{
   id String @id @default(uuid())
-  isActive Boolean @default(true)
   id_entity String
-  ExternalEntity ExternalEntity @relation(fields: [id_entity], references: [id], onDelete: Cascade)
   id_type String
+  ExternalEntity ExternalEntity @relation(fields: [id_entity], references: [id], onDelete: Cascade)
   type Type @relation(fields: [id_type], references: [id], onDelete: Cascade)
+  
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isActive Boolean @default(true)
 }
 
 model Type{
   id String @id @default(uuid())
-  isActive Boolean @default(true)
   name String?
-
   type Type_Entity[]
+  
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isActive Boolean @default(true)
 }
 
 model Department {
   id       String  @id @default(uuid())
-  isActive Boolean @default(true)
   id_entity  String
   name String
   displayName String?
@@ -168,63 +185,75 @@ model Department {
   User User? @relation(fields: [id_user], references: [id], onDelete: Cascade)
   Entity     Entity  @relation(fields: [id_entity], references: [id], onDelete: Cascade)
   employee Employee []
+  
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isActive Boolean @default(true)
   // fonction Function[]
 }
 
 model Grade {
   id       String  @id @default(uuid())
-  isActive Boolean @default(true)
   name       String
   displayName String?
   power Int @default(0)
   employee Employee[]
+  
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isActive Boolean @default(true)
 }
 model EchelonCategory {
   id       String  @id @default(uuid())
-  isActive Boolean @default(true)
   name       String
   displayName String?
   category   String
   power Int @default(0)
   employee Employee[]
+
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isActive Boolean @default(true)
 }
 
 model Site{
   id String @id @default(uuid())
-  isActive Boolean @default(true)
   name String
   displayName String?
   type TypeSite @default(ONFIELD)
   id_entity String
   Entity Entity @relation(fields: [id_entity], references: [id])
+  
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isActive Boolean @default(true)
 }
 
 model EntityBank{
   id String @id @default(uuid())
-
-  isActive Boolean @default(true)
   id_entity String
   entity Entity @relation(fields: [id_entity], references: [id])
 
   id_bank String
   bank Bank @relation(fields: [id_bank], references: [id])
+  
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isActive Boolean @default(true)
 }
 
 model ExternalEntityBank{
   id String @id @default(uuid())
-  isActive Boolean @default(true)
 
   id_external_entity String
   external_entity ExternalEntity @relation(fields: [id_external_entity], references: [id])
 
   id_bank String
   bank Bank @relation(fields: [id_bank], references: [id])
+  
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isActive Boolean @default(true)
 }
 
 model EmployeeBank{
@@ -235,7 +264,9 @@ model EmployeeBank{
 
   id_bank String
   bank Bank @relation(fields: [id_bank], references: [id])
+  
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   isActive Boolean @default(true)
 }
 
@@ -245,13 +276,15 @@ model Bank{
   displayName String?
   sigle String
   Acronyme String
-  createdAt DateTime @default(now())
-  isActive Boolean @default(true)
 
   bank_account BankAccount[]
   entity_bank EntityBank[]
   external_entity_bank ExternalEntityBank[]
   employee_bank EmployeeBank[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isActive Boolean @default(true)
 }
 
 model BankAccount{
@@ -273,7 +306,9 @@ model BankAccount{
 
   id_bank String
   Bank Bank @relation(fields: [id_bank], references: [id])
+  
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   isActive Boolean @default(true)
 }
 
@@ -284,7 +319,6 @@ model Account {
   name String @unique
   displayName String?
   amount Float? @default(0.0)
-  createdAt DateTime @default(now())
 
   idOperator String
   operator Operator @relation(fields: [idOperator], references: [id]) 
@@ -297,6 +331,9 @@ model Account {
 
   idExternalEntity String?
   externalEntity ExternalEntity? @relation(fields: [idExternalEntity], references: [id])
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   isActive Boolean @default(true)
 }
 
@@ -306,10 +343,11 @@ model Operator {
   name String
   type AccountType @default(MOBILE)
   displayName String
+  accounts Account[]
+
   isActive Boolean @default(true)
   createdAt DateTime @default(now())
-
-  accounts Account[]
+  updatedAt DateTime @updatedAt
 }
 
 model Product{
@@ -320,7 +358,9 @@ model Product{
   description String
   id_entity String
   Entity Entity @relation(fields: [id_entity], references: [id])
+  
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   isActive Boolean @default(true)
 }
 
@@ -332,7 +372,9 @@ model CashDesk{
 
   idEntity String
   entity Entity @relation(fields: [idEntity], references: [id])
+  
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   isActive Boolean @default(true)
 }
 
@@ -346,8 +388,10 @@ model Currency{
   symbol String
 
   currencyCuts CurrencyCuts[]
-  isActive Boolean @default(true)
+  
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isActive Boolean @default(true)
 }
 
 model CurrencyCuts{
@@ -357,7 +401,9 @@ model CurrencyCuts{
 
   currencyId String
   currency Currency @relation(fields: [currencyId], references: [id])
+
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   isActive Boolean @default(true)
 }
 
