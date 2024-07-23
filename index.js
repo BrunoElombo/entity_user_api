@@ -1,4 +1,13 @@
 require("dotenv").config();
+const { PrismaStudio } = require('@prisma/studio-vercel');
+const { PrismaClient } = require('@prisma/client');
+
+const prisma = new PrismaClient();
+
+const studio = new PrismaStudio({
+  schemaPath: './prisma/schema.prisma',
+  prisma,
+});
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -21,17 +30,13 @@ const path = require('path');
 
 const app = express();
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/static', express.static(path.join(__dirname, 'public')))
 
-// const ipAddress = '172.19.131.1';
-// const ipAddress = '192.168.114.191';
-// const ipAddress = '192.168.43.191';
-// const ipAddress = '172.19.120.187';
 
 const corsOptions = {
     origin: "*"
 }
 
-// Error handling middleware (optional)
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something went wrong!');
