@@ -1,4 +1,3 @@
-// controllers/bankController.js
 const bankService = require('../services/bankService');
 
 exports.createBank = async (req, res) => {

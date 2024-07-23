@@ -60,3 +60,23 @@ exports.deleteAccount = async (id, idEntity) => {
     } 
   });
 };
+
+exports.getAccountByType = async (idEntity, type)=>{
+  try{
+      let accountType = type.toUpperCase();
+      let operator = await prisma.operator.findMany({
+          where:{
+              type: accountType,
+              isActive: true
+          }
+      });
+
+      let account = await prisma.account.findMany({
+          where:{idOperator: operator.id, idEntity: idEntity, isActive: true}
+      });
+
+      return account;
+  }catch(e){
+      throw new Error(e.message);
+  }
+};

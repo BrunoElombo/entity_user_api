@@ -1,4 +1,5 @@
 const PrismaClient = require('@prisma/client').PrismaClient;
+const employeeService = require('../services/employeeService');
 const prisma = new PrismaClient();
 const jwt = require('jsonwebtoken');
 
@@ -337,17 +338,11 @@ exports.getEmployeeByEntity = async (req, res)=>{
       }
     });
 
-    return res.status(200).send(employees);
+    res.status(200).send(employees);
   } catch (error) {
-    console.log(error)
-    return res.status(500).send(error.message);
+    res.status(500).send(error.message);
   }
 }
-
-
-// Updates 
-// controllers/employeeController.js
-const employeeService = require('../services/employeeService');
 
 exports.createEmployee = async (req, res) => {
   try {

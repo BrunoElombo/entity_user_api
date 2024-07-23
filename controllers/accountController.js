@@ -11,7 +11,15 @@ exports.createAccount = async (req, res) => {
 };
 
 exports.getAllAccounts = async (req, res) => {
+  // Get the query parameters "types"
+  let  { type } = req.query;
+
+  // get the accounts by 
   try {
+    if(type){
+      let account = await accountService.getAccountByType(req.entity, type);
+      return res.send(account);
+    }
     const accounts = await accountService.getAllAccounts();
     res.json(accounts);
   } catch (error) {

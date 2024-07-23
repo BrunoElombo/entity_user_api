@@ -62,10 +62,7 @@ exports.getBankByEmployee = async (req, res) =>{
     }
 }
 
-
-
 exports.getEmployeeBankAccounts = async (req, res)=>{
-    let entity_id;
     if(req.query.entity_id){
         entity_id = req.query.entity_id;
         try {

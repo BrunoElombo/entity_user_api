@@ -12,7 +12,7 @@ const { notFoundeHandler } = require('./middlewares/notFoundHandler');
 const userRoutes = require("./routes/userRoutes");
 const authRoutes = require("./routes/authRoutes");
 const refreshRoutes = require('./routes/refreshRoutes');
-const employeeRoutes = require("./routes/employee");
+const employeeRoutes = require("./routes/employeeRoutes");
 const employeeRoleRoutes = require('./routes/employeeRoleRoutes');
 const roleRoutes = require('./routes/roleRoutes');
 const functionRoutes = require('./routes/functionRoutes');
@@ -78,7 +78,8 @@ app.use(errorHandler);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.get("/", (req, res)=>{
-    res.send("Entity API");
+    // res.send("Entity API");
+    res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 
 app.use("/api/login", authRoutes);

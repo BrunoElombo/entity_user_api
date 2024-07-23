@@ -22,7 +22,7 @@ exports.getAllCashDesks = async (req, res) => {
 
 exports.getCashDeskById = async (req, res) => {
   try {
-    const cashDesk = await cashDeskService.getCashDeskById(req.params.id);
+    const cashDesk = await cashDeskService.getCashDeskById(req.params.id, req.entity);
     res.json(cashDesk);
   } catch (error) {
     res.status(404).json({ error: error.message });
