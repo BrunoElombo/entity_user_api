@@ -13,7 +13,7 @@ exports.getCashDesks = async (req, res)=>{
           where:{id_user: userId, is_active:true}
       });
 
-      const entityCashDesks = await prisma.CashDesk.findMany({
+      const entityCashDesks = await prisma.cashDesk.findMany({
         where:{
           idEntity: employee.id_entity
         },

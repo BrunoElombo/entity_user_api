@@ -14,7 +14,7 @@ exports.getAllEntityAccounts=async(req, res)=>{
     try {
         let employee = await prisma.employee.findUnique({
             where:{id_user: userId}
-        })
+        });
         let idEntity = employee.id_entity;
 
         if(type){
@@ -40,9 +40,6 @@ exports.getAllEntityAccounts=async(req, res)=>{
 
 }
 
-exports.getAccountById=(req, res)=>{
-
-}
 
 
 

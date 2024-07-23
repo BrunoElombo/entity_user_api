@@ -1,13 +1,4 @@
 require("dotenv").config();
-const { PrismaStudio } = require('@prisma/studio-vercel');
-const { PrismaClient } = require('@prisma/client');
-
-const prisma = new PrismaClient();
-
-const studio = new PrismaStudio({
-  schemaPath: './prisma/schema.prisma',
-  prisma,
-});
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -27,11 +18,21 @@ const fileRoutes = require("./routes/file");
 const operatorRoutes = require("./routes/operator");
 const accountRoutes = require("./routes/account");
 const path = require('path');
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+const {swaggerOptions} = require('./config/swagger');
+
+
 
 const app = express();
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use('/static', express.static(path.join(__dirname, 'public')))
+app.use('/static', express.static(path.join(__dirname, 'public')));
 
+// Initialize swagger-jsdoc -> returns validated swagger spec in json format
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+
+// Serve Swagger documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const corsOptions = {
     origin: "*"
@@ -46,7 +47,8 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 app.get("/", (req, res)=>{
-    res.send("Entity API");
+    // res.send("Entity API");
+    res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 
 app.use("/api", authRoutes);
@@ -65,7 +67,7 @@ app.use("/currencies", currencyRoutes);
 app.use("/file", fileRoutes);
 
 app.listen(process.env.PORT, ()=>{
-    console.log(`Server listening on http://localhost:${process.env.PORT}`)
+    console.log(`Server listening on http://localhost:${process.env.PORT || 5000}`)
 })
 // app.listen(process.env.PORT, process.env.ADDRESS, ()=>{
 //     console.log(`Server listening on http://${process.env.ADDRESS}:${process.env.PORT}`)
