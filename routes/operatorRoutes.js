@@ -8,7 +8,7 @@ const { validateOperator, validateOperatorUpdate } = require('../validations/ope
 router.post('/', validateOperator, operatorController.createOperator);
 router.get('/', operatorController.getAllOperators);
 router.get('/:id', operatorController.getOperatorById);
-router.put('/:id', validateOperatorUpdate, operatorController.updateOperator);
+router.patch('/:id', validateOperatorUpdate, operatorController.updateOperator);
 router.delete('/:id', operatorController.deleteOperator);
 
 module.exports = router;

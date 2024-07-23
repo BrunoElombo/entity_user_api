@@ -39,9 +39,14 @@ exports.updateOperator = async (id, operatorData) => {
 };
 
 exports.deleteOperator = async (id) => {
-  const operator = await prisma.operator.findUnique({ where: { id } });
+  const operator = await prisma.operator.findUnique({ where: { id, isActive: true } });
   if (!operator) {
     throw new Error('Operator not found');
   }
-  await prisma.operator.delete({ where: { id } });
+  await prisma.operator.update({ 
+    where: { id, isActive: true },
+    data:{
+      isActive: false,
+    }
+  });
 };

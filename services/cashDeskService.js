@@ -48,7 +48,7 @@ exports.deleteCashDesk = async (id, idEntity) => {
   await prisma.cashDesk.update({ 
     where: { id, idEntity },
     data:{
-      isActive: true
+      isActive: false,
     }
   });
 };

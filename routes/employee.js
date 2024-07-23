@@ -10,13 +10,13 @@ employeeRouter.get('/controllers', verifyJWT, employeeController.getEmployeeCont
 employeeRouter.get('/:employeeId/colleagues', verifyJWT, employeeController.getEmployeeColleagues);
 employeeRouter.get('/:entity_id/entities', verifyJWT, employeeController.getEmployeeEntities);
 employeeRouter.get('/:id/banks', verifyJWT, employeeController.getEmployeeBanks)
-employeeRouter.get('/',verifyJWT, employeeController.getEmployeeByEntity);
+employeeRouter.get('/', employeeController.getEmployeeByEntity);
 
 // Updates
 // const employeeController = require('../controllers/employeeController');
 const { validateEmployee, validateEmployeeUpdate } = require('../validations/employeeValidation');
 
-employeeRouter.post('/create', validateEmployee, employeeController.createEmployee);
+employeeRouter.post('/', validateEmployee, employeeController.createEmployee);
 employeeRouter.get('/profile', employeeController.getEmployeeProfile);
 employeeRouter.put('/update', validateEmployeeUpdate, employeeController.updateEmployeeProfile);
 employeeRouter.delete('/delete', employeeController.deleteEmployee);

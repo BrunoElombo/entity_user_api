@@ -2,7 +2,7 @@ const prisma = require('../prisma/client');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-exports.loginUser = async (username, userPassword,keepMeIn) => {
+exports.loginUser = async (username, userPassword, keepMeIn) => {
     const user = await prisma.user.findUnique({ 
       where: { name: username }
     });
@@ -14,6 +14,8 @@ exports.loginUser = async (username, userPassword,keepMeIn) => {
     if (!isPasswordValid) {
       return {message: 'Invalid password'};
     }
+    keepMeIn = keepMeIn || false;
+
     try{
         const accessToken = jwt.sign({ id: user.id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
         const refreshToken = jwt.sign({ id: user.id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
@@ -21,7 +23,7 @@ exports.loginUser = async (username, userPassword,keepMeIn) => {
         await prisma.user.update({
           where:{id: user.id},
           data:{ 
-            keepMeIn: keepMeIn || false,
+            keepMeIn: keepMeIn,
             refreshToken,
           }
         })

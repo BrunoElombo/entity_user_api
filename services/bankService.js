@@ -41,9 +41,14 @@ exports.updateBank = async (id, bankData) => {
 };
 
 exports.deleteBank = async (id) => {
-  const bank = await prisma.bank.findUnique({ where: { id } });
+  const bank = await prisma.bank.findUnique({ where: { id, isActive: true } });
   if (!bank) {
     throw new Error('Bank not found');
   }
-  await prisma.bank.delete({ where: { id } });
+  await prisma.bank.update({ 
+    where: { id, isActive: true },
+    data:{
+      isActive: false,
+    }
+ });
 };

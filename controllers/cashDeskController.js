@@ -13,7 +13,7 @@ exports.createCashDesk = async (req, res) => {
 exports.getAllCashDesks = async (req, res) => {
   try {
 
-    const cashDesks = await cashDeskService.getAllCashDesks(req.entity);
+    const cashDesks = await cashDeskService.getAllCashDesks(req.entity, req.entity);
     res.json(cashDesks);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -31,7 +31,7 @@ exports.getCashDeskById = async (req, res) => {
 
 exports.updateCashDesk = async (req, res) => {
   try {
-    const cashDesk = await cashDeskService.updateCashDesk(req.params.id, req.body);
+    const cashDesk = await cashDeskService.updateCashDesk(req.params.id, req.body, req.entity);
     res.json(cashDesk);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -40,7 +40,7 @@ exports.updateCashDesk = async (req, res) => {
 
 exports.deleteCashDesk = async (req, res) => {
   try {
-    await cashDeskService.deleteCashDesk(req.params.id);
+    await cashDeskService.deleteCashDesk(req.params.id, req.entity);
     res.status(204).send();
   } catch (error) {
     res.status(404).json({ error: error.message });

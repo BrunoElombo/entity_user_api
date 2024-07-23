@@ -7,7 +7,7 @@ const { validateGrade, validateGradeUpdate } = require('../validations/gradeVali
 router.post('/', validateGrade, gradeController.createGrade);
 router.get('/', gradeController.getAllGrades);
 router.get('/:id', gradeController.getGradeById);
-router.put('/:id', validateGradeUpdate, gradeController.updateGrade);
+router.patch('/:id', validateGradeUpdate, gradeController.updateGrade);
 router.delete('/:id', gradeController.deleteGrade);
 
 module.exports = router;
