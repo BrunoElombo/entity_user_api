@@ -19,7 +19,7 @@ exports.getAllExternalEntities = async () => {
 };
 
 exports.getExternalEntityById = async (id) => {
-  const externalEntity = await prisma.externalEntity.findUnique({ where: { id } });
+  const externalEntity = await prisma.externalEntity.findUnique({ where: { id, isActive: true } });
   if (!externalEntity) {
     throw new Error('External Entity not found');
   }
@@ -27,21 +27,23 @@ exports.getExternalEntityById = async (id) => {
 };
 
 exports.updateExternalEntity = async (id, externalEntityData) => {
-  const { name, displayName, id_entity } = externalEntityData;
   return prisma.externalEntity.update({
-    where: { id },
+    where: { id, isActive: true },
     data: {
-      name,
-      displayName,
-      id_entity,
+      ...externalEntityData
     },
   });
 };
 
 exports.deleteExternalEntity = async (id) => {
-  const externalEntity = await prisma.externalEntity.findUnique({ where: { id } });
+  const externalEntity = await prisma.externalEntity.findUnique({ where: { id, isActive: true } });
   if (!externalEntity) {
     throw new Error('External Entity not found');
   }
-  await prisma.externalEntity.delete({ where: { id } });
+  await prisma.externalEntity.update({ 
+    where: { id, isActive: true },
+    data:{
+      isActive: false
+    }
+  });
 };

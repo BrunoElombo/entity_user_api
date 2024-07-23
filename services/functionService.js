@@ -43,5 +43,10 @@ exports.deleteFunction = async (id) => {
   if (!func) {
     throw new Error('Function not found');
   }
-  await prisma.function.delete({ where: { id } });
+  await prisma.function.update({ 
+    where: { id },
+    data:{
+      isActive: false,
+    }
+  });
 };

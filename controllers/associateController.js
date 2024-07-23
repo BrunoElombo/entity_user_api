@@ -21,7 +21,7 @@ exports.getAllAssociates = async (req, res) => {
 
 exports.getAssociateById = async (req, res) => {
   try {
-    const associate = await associateService.getAssocierById(req.params.id);
+    const associate = await associateService.getAssociateById(req.params.id);
     res.json(associate);
   } catch (error) {
     res.status(404).json({ error: error.message });

@@ -35,9 +35,12 @@ exports.updateType = async (id, typeData) => {
 };
 
 exports.deleteType = async (id) => {
-  const type = await prisma.type.findUnique({ where: { id } });
+  const type = await prisma.type.findUnique({ where: { id, isActive:true } });
   if (!type) {
     throw new Error('Type not found');
   }
-  await prisma.type.delete({ where: { id } });
+  await prisma.type.update({ 
+    where: { id, isActive: true },
+     data:{isActive: false}
+  });
 };

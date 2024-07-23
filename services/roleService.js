@@ -43,5 +43,10 @@ exports.deleteRole = async (id) => {
   if (!role) {
     throw new Error('Role not found');
   }
-  await prisma.role.delete({ where: { id } });
+  return await prisma.role.update({ 
+    where: { id },
+    data:{
+      isActive: false,
+    }
+  });
 };

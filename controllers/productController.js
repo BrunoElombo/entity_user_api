@@ -1,106 +1,47 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
-const jwt = require('jsonwebtoken');
-
+// controllers/productController.js
+const productService = require('../services/productService');
 
 exports.createProduct = async (req, res) => {
   try {
-    const decodedToken = jwt.decode(req.headers.authorization.split(' ')[1]);
-    const userId = decodedToken.id;
-    const employee = await prisma.employee.findUnique({
-        where:{id_user: userId},
-    });
-
-    const { name, unit, description } = req.body;
-
-    if(!name || !unit){
-        return res.status(401).send("Invalid form");
-    }
-
-    const product = await prisma.product.create({
-      data: {
-        name,
-        unit,
-        description : (description !==undefined ? description : ""),
-        Entity: { connect: { id: employee.id_entity } },
-      },
-    });
-    res.json(product);
+    const product = await productService.createProduct(req.body);
+    res.status(201).json(product);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(400).json({ error: error.message });
   }
 };
 
-// Controller for retrieving all products
 exports.getAllProducts = async (req, res) => {
   try {
-    const decodedToken = jwt.decode(req.headers.authorization.split(' ')[1]);
-    const userId = decodedToken.id;
-    const employee = await prisma.employee.findUnique({
-        where:{id_user: userId},
-    });
-    
-    const products = await prisma.product.findMany({
-        where:{
-            id_entity: employee.id_entity
-        }
-    });
+    const products = await productService.getAllProducts();
     res.json(products);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: error.message });
   }
 };
 
-// Controller for retrieving a single product by ID
 exports.getProductById = async (req, res) => {
   try {
-    const { id } = req.params;
-    const product = await prisma.product.findUnique({
-      where: { id },
-    });
-    if (!product) {
-      return res.status(404).json({ error: 'Product not found' });
-    }
+    const product = await productService.getProductById(req.params.id);
     res.json(product);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(404).json({ error: error.message });
   }
 };
 
-// Controller for updating a product
 exports.updateProduct = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { name, unit, description, id_entity } = req.body;
-    const product = await prisma.product.update({
-      where: { id },
-      data: {
-        name,
-        unit,
-        description,
-        Entity: { connect: { id: id_entity } }, // Assuming id_entity exists
-      },
-    });
+    const product = await productService.updateProduct(req.params.id, req.body);
     res.json(product);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(400).json({ error: error.message });
   }
 };
 
-// Controller for deleting a product
 exports.deleteProduct = async (req, res) => {
   try {
-    const { id } = req.params;
-    await prisma.product.delete({
-      where: { id },
-    });
-    res.json({ message: 'Product deleted successfully' });
+    await productService.deleteProduct(req.params.id);
+    res.status(204).send();
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(404).json({ error: error.message });
   }
 };

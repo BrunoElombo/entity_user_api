@@ -47,5 +47,8 @@ exports.deleteEntity = async (id) => {
   if (!entity) {
     throw new Error('Entity not found');
   }
-  await prisma.entity.delete({ where: { id } });
+  await prisma.entity.update({ 
+    where: { id },
+    data:{ isActive: false} 
+  });
 };

@@ -2,34 +2,41 @@ require("dotenv").config();
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const {logger} = require('./middlewares/logEvents');
 const { errorHandler } = require('./middlewares/errorHandlers');
 const { notFoundeHandler } = require('./middlewares/notFoundHandler');
 
 // Routes files
-const userRoutes = require("./routes/user");
-const authRoutes = require("./routes/auth");
+const userRoutes = require("./routes/userRoutes");
+const authRoutes = require("./routes/authRoutes");
+const refreshRoutes = require('./routes/refreshRoutes');
+
 const employeeRoutes = require("./routes/employee");
 const roleRoutes = require('./routes/roleRoutes');
 const functionRoutes = require('./routes/functionRoutes');
+const echelonCategoryRoutes = require('./routes/echelonCategoryRoutes');
 const entitiesRoutes = require("./routes/entityRoutes");
 const entityRoutes = require('./routes/entityRoutes');
 const associateRoutes = require('./routes/associateRoutes');
 const externalEntityRoutes = require('./routes/externalEntityRoutes');
 const typeEntityRoutes = require('./routes/typeEntityRoutes');
 const typeRoutes = require('./routes/typeRoutes');
+const operatorRoutes = require('./routes/operatorRoutes');
+const productRoutes = require('./routes/productRoutes'); 
+const sitesRoutes = require("./routes/siteRoutes");
+const departmentRoutes = require("./routes/departmentRoutes");
+const accountRoutes = require('./routes/accountRoutes');
+const bankRoutes = require("./routes/bank");
+const cashDeskRoutes = require('./routes/cashDeskRoutes');
 
 const externalEntitiesRoutes = require("./routes/externalEntityRoutes");
-const sitesRoutes = require("./routes/site");
-const productRoutes = require("./routes/product");
-const bankRoutes = require("./routes/bank");
-const departmentRoutes = require("./routes/departmentRoutes");
-const cashDeskRoutes = require("./routes/cashDesk");
-const currencyRoutes = require("./routes/currency");
+// const productRoutes = require("./routes/product");
+// const cashDeskRoutes = require("./routes/cashDesk");
+const currencyRoutes = require('./routes/currencyRoutes');
+// const currencyRoutes = require("./routes/currency");
 const fileRoutes = require("./routes/file"); 
-const operatorRoutes = require("./routes/operator");
-const accountRoutes = require("./routes/account");
 const path = require('path');
 
 const app = express();
@@ -54,6 +61,7 @@ const corsOptions = {
     origin: "*"
 }
 app.use(cors(corsOptions));
+app.use(cookieParser());
 app.use(bodyParser.json());
 
 /**
@@ -97,30 +105,32 @@ app.use("/currencies", currencyRoutes);
 app.use("/file", fileRoutes);
 
 // Updates (Routes)
-app.use("/api", authRoutes);
+app.use("/api/login", authRoutes);
+app.use("/api/refresh", refreshRoutes);
 
 app.use("/api/users", userRoutes);
 app.use("/api/employees", employeeRoutes);
 app.use('/api/roles', roleRoutes);
 app.use('/api/functions', functionRoutes);
-app.use('/api/entities', entityRoutes);
 app.use('/api/associates', associateRoutes);
+app.use('/api/echelon-categories', echelonCategoryRoutes);
+app.use('/api/entities', entityRoutes);
 app.use('/api/external-entities', externalEntityRoutes);
 app.use('/api/type-entities', typeEntityRoutes);
 app.use('/api/types', typeRoutes);
-
-app.use("/api/account", accountRoutes);
+app.use('/api/accounts', accountRoutes);
 app.use("/api/operators", operatorRoutes);
 app.use("/api/entities",entitiesRoutes);
 app.use("/api/external_entities",externalEntitiesRoutes);
 app.use("/api/sites",sitesRoutes);
-app.use("/api/products", productRoutes);
-app.use("/api/banks", bankRoutes);
 app.use("/api/departments", departmentRoutes);
-app.use("/api/cash-desk", cashDeskRoutes);
+app.use("/api/products", productRoutes);
 app.use("/api/currencies", currencyRoutes);
+
+app.use("/api/banks", bankRoutes);
+app.use("/api/cash-desk", cashDeskRoutes);
 app.use("/api/file", fileRoutes);
-app.all('*', notFoundeHandler);
+// app.all('*', notFoundeHandler);
 
 
 

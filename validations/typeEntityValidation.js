@@ -2,8 +2,8 @@
 const { body, validationResult } = require('express-validator');
 
 exports.validateTypeEntity = [
-  body('id_entity').notEmpty().withMessage('Entity ID is required'),
-  body('id_type').notEmpty().withMessage('Type ID is required'),
+  body('id_external_entity').notEmpty().withMessage('External entity ID is required'),
+  body('id_type').notEmpty().withMessage('Entity type ID is required'),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

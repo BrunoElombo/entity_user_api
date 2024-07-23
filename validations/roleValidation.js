@@ -3,7 +3,7 @@ const { body, validationResult } = require('express-validator');
 
 exports.validateRole = [
   body('name').notEmpty().withMessage('Role name is required'),
-  body('displayName').optional().notEmpty().withMessage('Display name cannot be empty'),
+  body('displayName').notEmpty().withMessage('Display name cannot be empty'),
   body('power').isInt({ min: 0 }).withMessage('Power must be a non-negative integer'),
   (req, res, next) => {
     const errors = validationResult(req);

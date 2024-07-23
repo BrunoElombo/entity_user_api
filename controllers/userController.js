@@ -109,19 +109,19 @@ exports.register = async (req, res) => {
   }
 };
 
-exports.login = async (req, res) => {
-  try {
-    const { name, password } = req.body;
-    const { user, token } = await userService.loginUser(name, password);
-    res.json({ user, token });
-  } catch (error) {
-    res.status(401).json({ error: error.message });
+exports.getAllUsers = async (req, res) =>{
+  try{
+    let users = await userService.getAllUsers();
+    return res.send(users);
+  }catch (error) {
+    return res.sendStatus(500);
   }
-};
+}
 
 exports.getProfile = async (req, res) => {
   try {
-    const user = await userService.getUserById(req.user.id);
+    let { authorization } = req.headers
+    const user = await userService.getUserById(authorization);
     res.json(user);
   } catch (error) {
     res.status(404).json({ error: error.message });
@@ -140,8 +140,10 @@ exports.updateProfile = async (req, res) => {
 };
 
 exports.deleteUser = async (req, res) => {
+  let { id } = req.params
+  if(!id) return res.sendStatus(400);
   try {
-    await userService.deleteUser(req.user.id);
+    await userService.deleteUser(id);
     res.status(204).send();
   } catch (error) {
     res.status(404).json({ error: error.message });

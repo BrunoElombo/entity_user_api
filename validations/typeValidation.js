@@ -2,7 +2,7 @@
 const { body, validationResult } = require('express-validator');
 
 exports.validateType = [
-  body('name').optional().notEmpty().withMessage('Name cannot be empty'),
+  body('name').notEmpty().withMessage('Name is required'),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

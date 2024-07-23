@@ -2,10 +2,10 @@
 const prisma = require('../prisma/client');
 
 exports.createTypeEntity = async (typeEntityData) => {
-  const { id_entity, id_type } = typeEntityData;
+  const { id_external_entity, id_type } = typeEntityData;
   return prisma.type_Entity.create({
     data: {
-      id_entity,
+      id_external_entity,
       id_type,
     },
   });
@@ -18,7 +18,7 @@ exports.getAllTypeEntities = async () => {
 };
 
 exports.getTypeEntityById = async (id) => {
-  const typeEntity = await prisma.type_Entity.findUnique({ where: { id } });
+  const typeEntity = await prisma.type_Entity.findUnique({ where: { id, isActive: true } });
   if (!typeEntity) {
     throw new Error('Type Entity not found');
   }
@@ -26,20 +26,25 @@ exports.getTypeEntityById = async (id) => {
 };
 
 exports.updateTypeEntity = async (id, typeEntityData) => {
-  const { id_entity, id_type } = typeEntityData;
+  const { id_external_entity, id_type } = typeEntityData;
   return prisma.type_Entity.update({
-    where: { id },
+    where: { id, isActive: true },
     data: {
-      id_entity,
+      id_external_entity,
       id_type,
     },
   });
 };
 
 exports.deleteTypeEntity = async (id) => {
-  const typeEntity = await prisma.type_Entity.findUnique({ where: { id } });
+  const typeEntity = await prisma.type_Entity.findUnique({ where: { id, isActive: true } });
   if (!typeEntity) {
     throw new Error('Type Entity not found');
   }
-  await prisma.type_Entity.delete({ where: { id } });
+  await prisma.type_Entity.update({ 
+    where: { id, isActive: true },
+    data:{
+      isActive: false
+    }
+  });
 };

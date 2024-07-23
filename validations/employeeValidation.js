@@ -1,4 +1,3 @@
-// validations/employeeValidation.js
 const { body, validationResult } = require('express-validator');
 
 exports.validateEmployee = [

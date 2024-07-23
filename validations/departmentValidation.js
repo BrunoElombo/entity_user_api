@@ -4,7 +4,7 @@ const { body, validationResult } = require('express-validator');
 exports.validateDepartment = [
   body('id_entity').notEmpty().withMessage('Entity ID is required'),
   body('name').notEmpty().withMessage('Department name is required'),
-  body('description').notEmpty().withMessage('Description is required'),
+  body('displayName').notEmpty().withMessage('display name is required'),
   body('budget').optional().isFloat({ min: 0 }).withMessage('Budget must be a non-negative number'),
   (req, res, next) => {
     const errors = validationResult(req);

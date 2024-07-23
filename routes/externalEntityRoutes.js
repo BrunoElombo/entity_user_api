@@ -4,10 +4,10 @@ const { validateExternalEntity, validateExternalEntityUpdate } = require('../val
 const externalEntityController = require('../controllers/externalEntityController');
 const verifyToken = require("../middlewares/verifyJWT");
 
-router.post('/create', verifyToken, validateExternalEntity, externalEntityController.createExternalEntity);
-router.get('/', verifyToken, externalEntityController.getAllExternalEntities);
-router.get('/:id', verifyToken, externalEntityController.getExternalEntityById);
-router.put('/:id', verifyToken, validateExternalEntityUpdate, externalEntityController.updateExternalEntity);
+router.post('/', verifyToken, validateExternalEntity, externalEntityController.createExternalEntity);
+router.get('/', externalEntityController.getAllExternalEntities);
+router.get('/:id', externalEntityController.getExternalEntityById);
+router.patch('/:id', verifyToken, validateExternalEntityUpdate, externalEntityController.updateExternalEntity);
 router.delete('/:id', verifyToken, externalEntityController.deleteExternalEntity);
 
 // Get entity detail including specific employees

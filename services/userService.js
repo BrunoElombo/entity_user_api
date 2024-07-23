@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 exports.createUser = async (userData) => {
-  const { name, email, phone, password } = userData;
+  const { name, displayName, email, phone, password } = userData;
   const hashedPassword = await bcrypt.hash(password, 10);
   return prisma.user.create({
     data: {
@@ -17,45 +17,58 @@ exports.createUser = async (userData) => {
   });
 };
 
-exports.loginUser = async (name, userPassword) => {
-  const user = await prisma.user.findUnique({ 
-    where: { name }
-});
-  if (!user) {
-    throw new Error('Invalid email or password');
-  }
-  const isPasswordValid = await bcrypt.compare(userPassword, user.password);
-  if (!isPasswordValid) {
-    throw new Error('Invalid email or password');
-  }
-  try{
-      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-      let { password, ...rest } = user;
-      return { user: rest, token };
-  }catch(error){
-    throw new Error('Internal server error'+ error.message);
-  }
-};
+exports.getAllUsers = async () =>{
+  const users = await prisma.user.findMany({
+    where: {is_active: true}
+  });
 
-exports.getUserById = async (id) => {
-  const user = await prisma.user.findUnique({ where: { id } });
+  let formatedUsers = users.map(user =>
+    {
+      let {password, refreshToken, ...rest} = user;
+      return rest
+    }
+  )
+  return formatedUsers;
+}
+
+exports.getUserById = async (authorization) => {
+  if(!authorization) throw new Error("Expired or no token found");
+  const decodedToken = jwt.decode(authorization.split(' ')[1]);
+  const userId = decodedToken.id;
+  const user = await prisma.user.findUnique({ where: { id : userId, is_active: true} });
   if (!user) {
     throw new Error('User not found');
   }
-  return user;
+  let {refreshToken, password, ...rest} = user;
+  return rest;
 };
 
 exports.updateUser = async (id, userData) => {
-  if(userData.password !== id) {
-
+  if (userData.password){
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+    userData.password = hashedPassword
   }
-  
+  const user = await prisma.user.update(
+    {
+      where: {id, is_active: true},
+      data:{
+        ...userData
+      }
+    });
+    let { password, refreshToken, ...rest} = user;
+  return rest;
 };
 
 exports.deleteUser = async (id) => {
-  const user = await prisma.user.findUnique({ where: { id } });
+  const user = await prisma.user.findUnique({ where: { id, is_active: true } });
   if (!user) {
     throw new Error('User not found');
   }
-  await prisma.user.delete({ where: { id } });
+
+  await prisma.user.update({ 
+    where: { id },
+    data:{
+      is_active: false
+    }
+  });
 };

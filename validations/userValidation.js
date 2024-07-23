@@ -1,4 +1,3 @@
-// validations/userValidation.js
 const { body, validationResult } = require('express-validator');
 
 exports.validateUser = [

@@ -18,7 +18,7 @@ exports.getAllAssociates = async () => {
 };
 
 exports.getAssociateById = async (id) => {
-  const associate = await prisma.associate.findUnique({ where: { id } });
+  const associate = await prisma.associate.findUnique({ where: { id, isActive: true } });
   if (!associate) {
     throw new Error('associate not found');
   }
@@ -28,7 +28,7 @@ exports.getAssociateById = async (id) => {
 exports.updateAssociate = async (id, associateData) => {
   const { id_entity, id_external_entity } = associateData;
   return prisma.associate.update({
-    where: { id },
+    where: { id, isActive: true },
     data: {
       id_entity,
       id_external_entity,
@@ -37,9 +37,14 @@ exports.updateAssociate = async (id, associateData) => {
 };
 
 exports.deleteAssociate = async (id) => {
-  const associate = await prisma.associate.findUnique({ where: { id } });
+  const associate = await prisma.associate.findUnique({ where: { id, isActive: true } });
   if (!associate) {
     throw new Error('associate not found');
   }
-  await prisma.associate.delete({ where: { id } });
+  await prisma.associate.update({ 
+    where: { id, isActive: true },
+    data:{
+      isActive: false,
+    }
+  });
 };

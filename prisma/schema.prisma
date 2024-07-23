@@ -20,6 +20,8 @@ model User {
   profile_picture String?
   gender String?
   niu String?
+  keepMeIn Boolean @default(false)
+  refreshToken String? @unique
   displayName String?
 
   is_active Boolean @default(true)
@@ -27,7 +29,7 @@ model User {
   is_staff Boolean @default(false)
 
   employee Employee? 
-  Department Department[]
+  // Department Department[]
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -110,7 +112,7 @@ model Entity {
   site Site[]
   Product Product[]
   entity_bank EntityBank []
-  external_entity ExternalEntity[]
+  // external_entity ExternalEntity[]
   Associate Associate[]
   bankAccount BankAccount[]
   cashDesks CashDesk []
@@ -123,9 +125,11 @@ model Entity {
 
 model Associate{
   id String @id @default(uuid())
+
   id_entity String
-  id_external_entity String
   entity Entity @relation(fields: [id_entity], references: [id])
+
+  id_external_entity String
   external_entity ExternalEntity @relation(fields: [id_external_entity], references: [id])
   
   createdAt DateTime @default(now())
@@ -136,12 +140,13 @@ model Associate{
 model ExternalEntity{
   id String @id @default(uuid())
   name String
-  displayName String?
-  id_entity String
-  entity Entity @relation(fields: [id_entity], references: [id])
+  displayName String
+
+  // id_entity String
+  // entity Entity @relation(fields: [id_entity], references: [id])
 
   type Type_Entity[]
-  external_entity ExternalEntityBank[]
+  external_entity_bank ExternalEntityBank[]
   Associate Associate[]
   bankAccount BankAccount[]
   account Account[]
@@ -153,9 +158,9 @@ model ExternalEntity{
 
 model Type_Entity{
   id String @id @default(uuid())
-  id_entity String
+  id_external_entity String
   id_type String
-  ExternalEntity ExternalEntity @relation(fields: [id_entity], references: [id], onDelete: Cascade)
+  ExternalEntity ExternalEntity @relation(fields: [id_external_entity], references: [id], onDelete: Cascade)
   type Type @relation(fields: [id_type], references: [id], onDelete: Cascade)
   
   createdAt DateTime @default(now())
@@ -177,12 +182,12 @@ model Department {
   id       String  @id @default(uuid())
   id_entity  String
   name String
-  displayName String?
-  description String
+  displayName String
+  description String?
   budget     Float?
   id_employee String?
-  id_user String?
-  User User? @relation(fields: [id_user], references: [id], onDelete: Cascade)
+  // id_user String?
+  // User User? @relation(fields: [id_user], references: [id], onDelete: Cascade)
   Entity     Entity  @relation(fields: [id_entity], references: [id], onDelete: Cascade)
   employee Employee []
   

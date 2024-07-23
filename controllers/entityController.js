@@ -6,24 +6,6 @@ const jwt = require('jsonwebtoken');
 const prisma = new PrismaClient();
 
 const EntityController = {
-
-  // Create Entity
-  createEntity: async (req, res) => {
-    try {
-      const entity = req.body;
-      const createdEntity = await prisma.entity.create({
-        data: entity,
-        include: {
-          department: true,
-          role: true
-        }
-      });
-      res.status(201).json(createdEntity);
-    } catch (error) {
-      console.error('Error creating entity:', error);
-      res.status(500).json({ error: 'Internal server error' });
-    }
-  },
   
   getAllEntities: async (req, res) => {
     const Function = req.query.function;
@@ -499,9 +481,19 @@ const EntityController = {
 
 };
 
-
-// Updates
 exports.createEntity = async (req, res) => {
+  let token = req.headers.authorization.split(" ")[1]
+  const decoded = jwt.decode(token);
+  const userId = decoded.id;
+
+  let admin = await prisma.user.findUnique(
+    {
+      where: {id: userId, is_active: true, is_admin: true}
+    }
+  )
+
+  if(!admin) return res.sendStatus(401);
+
   try {
     const entity = await entityService.createEntity(req.body);
     res.status(201).json(entity);
@@ -546,4 +538,3 @@ exports.deleteEntity = async (req, res) => {
   }
 };
 
-module.exports = EntityController;
