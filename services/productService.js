@@ -14,24 +14,24 @@ exports.createProduct = async (productData) => {
   });
 };
 
-exports.getAllProducts = async () => {
+exports.getAllProducts = async (id_entity) => {
   return prisma.product.findMany({
-    where: { isActive: true },
+    where: { isActive: true, id_entity },
   });
 };
 
-exports.getProductById = async (id) => {
-  const product = await prisma.product.findUnique({ where: { id } });
+exports.getProductById = async (id, id_entity) => {
+  const product = await prisma.product.findUnique({ where: { id, id_entity } });
   if (!product) {
     throw new Error('Product not found');
   }
   return product;
 };
 
-exports.updateProduct = async (id, productData) => {
+exports.updateProduct = async (id, productData, idEntity) => {
   const { name, displayName, unit, description, id_entity } = productData;
   return prisma.product.update({
-    where: { id },
+    where: { id, id_entity: idEntity },
     data: {
       name,
       displayName,

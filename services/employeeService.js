@@ -16,7 +16,7 @@ exports.createEmployee = async (employeeData) => {
   });
 };
 
-exports.getEmployeeById = async (id) => {
+exports.getEmployeeById = async (id, id_entity) => {
   const employee = await prisma.employee.findUnique({ where: { id } });
   if (!employee) {
     throw new Error('Employee not found');
@@ -24,24 +24,25 @@ exports.getEmployeeById = async (id) => {
   return employee;
 };
 
-exports.updateEmployee = async (id, employeeData) => {
-  const { id_level, id_grade, id_department, id_function, id_role } = employeeData;
+exports.updateEmployee = async (id, employeeData, idEntity) => {
+  const { id_entity } = employeeData;
   return prisma.employee.update({
-    where: { id },
+    where: { id, id_entity:idEntity },
     data: {
-      id_level,
-      id_grade,
-      id_department,
-      id_function,
-      id_role
+      ...employeeData
     }
   });
 };
 
-exports.deleteEmployee = async (id) => {
-  const employee = await prisma.employee.findUnique({ where: { id } });
+exports.deleteEmployee = async (id, id_entity) => {
+  const employee = await prisma.employee.findUnique({ where: { id, id_entity } });
   if (!employee) {
     throw new Error('Employee not found');
   }
-  await prisma.employee.delete({ where: { id } });
+  await prisma.employee.update({ 
+    where: { id },
+    data:{
+      isActive: true
+    }
+  });
 };

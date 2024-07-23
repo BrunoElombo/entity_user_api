@@ -12,8 +12,8 @@ const { notFoundeHandler } = require('./middlewares/notFoundHandler');
 const userRoutes = require("./routes/userRoutes");
 const authRoutes = require("./routes/authRoutes");
 const refreshRoutes = require('./routes/refreshRoutes');
-
 const employeeRoutes = require("./routes/employee");
+const employeeRoleRoutes = require('./routes/employeeRoleRoutes');
 const roleRoutes = require('./routes/roleRoutes');
 const functionRoutes = require('./routes/functionRoutes');
 const echelonCategoryRoutes = require('./routes/echelonCategoryRoutes');
@@ -28,14 +28,12 @@ const productRoutes = require('./routes/productRoutes');
 const sitesRoutes = require("./routes/siteRoutes");
 const departmentRoutes = require("./routes/departmentRoutes");
 const accountRoutes = require('./routes/accountRoutes');
-const bankRoutes = require("./routes/bank");
+const bankRoutes = require("./routes/bankRoutes");
 const cashDeskRoutes = require('./routes/cashDeskRoutes');
-
-const externalEntitiesRoutes = require("./routes/externalEntityRoutes");
-// const productRoutes = require("./routes/product");
-// const cashDeskRoutes = require("./routes/cashDesk");
 const currencyRoutes = require('./routes/currencyRoutes');
-// const currencyRoutes = require("./routes/currency");
+const currencyCutsRoutes = require('./routes/currencyCutsRoutes');
+const gradeRoutes = require('./routes/gradeRoutes');
+const externalEntitiesRoutes = require("./routes/externalEntityRoutes");
 const fileRoutes = require("./routes/file"); 
 const path = require('path');
 
@@ -79,45 +77,25 @@ app.use(errorHandler);
  */
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-
-
-
-
-
 app.get("/", (req, res)=>{
     res.send("Entity API");
 });
 
-// (Routes)
-app.use("/api", authRoutes);
-app.use("/account", accountRoutes);
-app.use("/operators", operatorRoutes);
-app.use("/users", userRoutes);
-app.use("/employees", employeeRoutes);
-app.use("/entities",entitiesRoutes);
-app.use("/external_entities",externalEntitiesRoutes);
-app.use("/sites",sitesRoutes);
-app.use("/products", productRoutes);
-app.use("/banks", bankRoutes);
-app.use("/departments", departmentRoutes);
-app.use("/cash-desk", cashDeskRoutes);
-app.use("/currencies", currencyRoutes);
-app.use("/file", fileRoutes);
-
-// Updates (Routes)
 app.use("/api/login", authRoutes);
 app.use("/api/refresh", refreshRoutes);
-
+app.use('/api/banks', bankRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/employees", employeeRoutes);
 app.use('/api/roles', roleRoutes);
 app.use('/api/functions', functionRoutes);
 app.use('/api/associates', associateRoutes);
 app.use('/api/echelon-categories', echelonCategoryRoutes);
+app.use('/api/grades', gradeRoutes);
 app.use('/api/entities', entityRoutes);
 app.use('/api/external-entities', externalEntityRoutes);
 app.use('/api/type-entities', typeEntityRoutes);
 app.use('/api/types', typeRoutes);
+app.use('/api/employee-roles', employeeRoleRoutes);
 app.use('/api/accounts', accountRoutes);
 app.use("/api/operators", operatorRoutes);
 app.use("/api/entities",entitiesRoutes);
@@ -126,8 +104,7 @@ app.use("/api/sites",sitesRoutes);
 app.use("/api/departments", departmentRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/currencies", currencyRoutes);
-
-app.use("/api/banks", bankRoutes);
+app.use('/api/currency-cuts', currencyCutsRoutes);
 app.use("/api/cash-desk", cashDeskRoutes);
 app.use("/api/file", fileRoutes);
 // app.all('*', notFoundeHandler);

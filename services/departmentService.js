@@ -16,24 +16,24 @@ exports.createDepartment = async (departmentData) => {
   });
 };
 
-exports.getAllDepartments = async () => {
+exports.getAllDepartments = async (id_entity) => {
   return prisma.department.findMany({
-    where: { isActive: true },
+    where: { isActive: true, id_entity },
   });
 };
 
-exports.getDepartmentById = async (id) => {
-  const department = await prisma.department.findUnique({  where: { id, isActive: true } });
+exports.getDepartmentById = async (id, id_entity) => {
+  const department = await prisma.department.findUnique({  where: { id, isActive: true, id_entity } });
   if (!department) {
     throw new Error('Department not found');
   }
   return department;
 };
 
-exports.updateDepartment = async (id, departmentData) => {
+exports.updateDepartment = async (id, departmentData, idEntity) => {
   const { id_entity, name, displayName, description, budget, id_employee, id_user } = departmentData;
   return prisma.department.update({
-    where: { id, isActive: true },
+    where: { id, isActive: true, id_entity: idEntity },
     data: {
       id_entity,
       name,
@@ -46,13 +46,13 @@ exports.updateDepartment = async (id, departmentData) => {
   });
 };
 
-exports.deleteDepartment = async (id) => {
-  const department = await prisma.department.findUnique({ where: { id, isActive: true } });
+exports.deleteDepartment = async (id, id_entity) => {
+  const department = await prisma.department.findUnique({ where: { id, isActive: true, id_entity } });
   if (!department) {
     throw new Error('Department not found');
   }
   await prisma.department.update({ 
-    where: { id },
+    where: { id, id_entity },
     data:{
       isActive: false,
     }

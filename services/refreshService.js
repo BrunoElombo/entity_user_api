@@ -8,10 +8,12 @@ exports.refreshToken = async (cookies) => {
         where:{refreshToken}
     })
     if (!user) throw new Error("Forbidden");
+
     let access = jwt.verify(
         refreshToken,
         process.env.REFRESH_TOKEN_SECRET
     )
+
     if(!access || user.id !== access.id) throw new Error("Forbidden");
 
     const accessToken = jwt.sign(
@@ -19,5 +21,6 @@ exports.refreshToken = async (cookies) => {
         process.env.ACCESS_TOKEN_SECRET,
         {expiresIn: '5m'}
     );
+    
     return {access: accessToken}
 };

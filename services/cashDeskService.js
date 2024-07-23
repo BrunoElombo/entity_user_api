@@ -13,24 +13,24 @@ exports.createCashDesk = async (cashDeskData) => {
   });
 };
 
-exports.getAllCashDesks = async () => {
+exports.getAllCashDesks = async (idEntity) => {
   return prisma.cashDesk.findMany({
-    where: { isActive: true },
+    where: { isActive: true, idEntity },
   });
 };
 
-exports.getCashDeskById = async (id) => {
-  const cashDesk = await prisma.cashDesk.findUnique({ where: { id } });
+exports.getCashDeskById = async (id, idEntity) => {
+  const cashDesk = await prisma.cashDesk.findUnique({ where: { id, idEntity } });
   if (!cashDesk) {
     throw new Error('Cash desk not found');
   }
   return cashDesk;
 };
 
-exports.updateCashDesk = async (id, cashDeskData) => {
+exports.updateCashDesk = async (id, cashDeskData, id_entity) => {
   const { name, displayName, amount, idEntity } = cashDeskData;
   return prisma.cashDesk.update({
-    where: { id },
+    where: { id, idEntity:id_entity },
     data: {
       name,
       displayName,
@@ -40,10 +40,15 @@ exports.updateCashDesk = async (id, cashDeskData) => {
   });
 };
 
-exports.deleteCashDesk = async (id) => {
-  const cashDesk = await prisma.cashDesk.findUnique({ where: { id } });
+exports.deleteCashDesk = async (id, idEntity) => {
+  const cashDesk = await prisma.cashDesk.findUnique({ where: { id, idEntity } });
   if (!cashDesk) {
     throw new Error('Cash desk not found');
   }
-  await prisma.cashDesk.delete({ where: { id } });
+  await prisma.cashDesk.update({ 
+    where: { id, idEntity },
+    data:{
+      isActive: true
+    }
+  });
 };

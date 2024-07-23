@@ -27,10 +27,10 @@ exports.getSiteById = async (id) => {
   return site;
 };
 
-exports.updateSite = async (id, siteData) => {
+exports.updateSite = async (id, siteData, idEntity) => {
   const { name, displayName, type, id_entity } = siteData;
   return prisma.site.update({
-    where: { id, isActive: true },
+    where: { id, isActive: true, id_entity: idEntity },
     data: {
       name,
       displayName,
@@ -40,8 +40,8 @@ exports.updateSite = async (id, siteData) => {
   });
 };
 
-exports.deleteSite = async (id) => {
-  const site = await prisma.site.findUnique({ where: { id, isActive: true } });
+exports.deleteSite = async (id, id_entity) => {
+  const site = await prisma.site.findUnique({ where: { id, isActive: true, id_entity } });
   if (!site) {
     throw new Error('Site not found');
   }

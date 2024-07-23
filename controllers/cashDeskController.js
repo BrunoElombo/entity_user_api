@@ -12,7 +12,8 @@ exports.createCashDesk = async (req, res) => {
 
 exports.getAllCashDesks = async (req, res) => {
   try {
-    const cashDesks = await cashDeskService.getAllCashDesks();
+
+    const cashDesks = await cashDeskService.getAllCashDesks(req.entity);
     res.json(cashDesks);
   } catch (error) {
     res.status(500).json({ error: error.message });

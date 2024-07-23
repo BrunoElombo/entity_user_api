@@ -1,4 +1,3 @@
-// services/accountService.js
 const prisma = require('../prisma/client');
 
 exports.createAccount = async (accountData) => {
@@ -16,24 +15,27 @@ exports.createAccount = async (accountData) => {
   });
 };
 
-exports.getAllAccounts = async () => {
+exports.getAllAccounts = async (idEntity) => {
   return prisma.account.findMany({
-    where: { isActive: true },
+    where: { 
+      idEntity, 
+      isActive: true 
+    },
   });
 };
 
-exports.getAccountById = async (id) => {
-  const account = await prisma.account.findUnique({ where: { id } });
+exports.getAccountById = async (id, idEntity) => {
+  const account = await prisma.account.findUnique({ where: { id, isActive: true, idEntity } });
   if (!account) {
     throw new Error('Account not found');
   }
   return account;
 };
 
-exports.updateAccount = async (id, accountData) => {
+exports.updateAccount = async (id, accountData, id_entity) => {
   const { name, displayName, amount, idOperator, idEntity, idEmployee, idExternalEntity } = accountData;
   return prisma.account.update({
-    where: { id },
+    where: { id, isActive: true, idEntity:id_entity  },
     data: {
       name,
       displayName,
@@ -46,10 +48,15 @@ exports.updateAccount = async (id, accountData) => {
   });
 };
 
-exports.deleteAccount = async (id) => {
-  const account = await prisma.account.findUnique({ where: { id } });
+exports.deleteAccount = async (id, idEntity) => {
+  const account = await prisma.account.findUnique({ where: { id, isActive: true, idEntity } });
   if (!account) {
     throw new Error('Account not found');
   }
-  await prisma.account.delete({ where: { id } });
+  await prisma.account.update({ 
+    where: { id, isActive: true, idEntity },
+    data:{
+      isActive: false
+    } 
+  });
 };

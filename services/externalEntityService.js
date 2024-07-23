@@ -12,36 +12,36 @@ exports.createExternalEntity = async (externalEntityData) => {
   });
 };
 
-exports.getAllExternalEntities = async () => {
+exports.getAllExternalEntities = async (id_entity) => {
   return prisma.externalEntity.findMany({
-    where: { isActive: true },
+    where: { isActive: true, id_entity },
   });
 };
 
-exports.getExternalEntityById = async (id) => {
-  const externalEntity = await prisma.externalEntity.findUnique({ where: { id, isActive: true } });
+exports.getExternalEntityById = async (id, id_entity) => {
+  const externalEntity = await prisma.externalEntity.findUnique({ where: { id, isActive: true, id_entity } });
   if (!externalEntity) {
     throw new Error('External Entity not found');
   }
   return externalEntity;
 };
 
-exports.updateExternalEntity = async (id, externalEntityData) => {
+exports.updateExternalEntity = async (id, externalEntityData, id_entity) => {
   return prisma.externalEntity.update({
-    where: { id, isActive: true },
+    where: { id, isActive: true, id_entity },
     data: {
       ...externalEntityData
     },
   });
 };
 
-exports.deleteExternalEntity = async (id) => {
-  const externalEntity = await prisma.externalEntity.findUnique({ where: { id, isActive: true } });
+exports.deleteExternalEntity = async (id, id_entity) => {
+  const externalEntity = await prisma.externalEntity.findUnique({ where: { id, isActive: true, id_entity } });
   if (!externalEntity) {
     throw new Error('External Entity not found');
   }
   await prisma.externalEntity.update({ 
-    where: { id, isActive: true },
+    where: { id, isActive: true, id_entity },
     data:{
       isActive: false
     }
