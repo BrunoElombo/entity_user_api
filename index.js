@@ -43,7 +43,7 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something went wrong!');
 });
 
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(bodyParser.json());
 
 app.get("/", (req, res)=>{
