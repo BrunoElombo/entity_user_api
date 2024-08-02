@@ -94,3 +94,20 @@ const jwt = require('jsonwebtoken');
       return res.status(500).json({ message: 'Server error' });
     }
   };
+
+  exports.updateProfile = async (req, res) =>{
+    try{
+      let {id} = req.params
+      if(!id) return res.sendStatus(400);
+      let data = req.body;
+      let profile = await prisma.user.update({
+        where:{id, is_active: true},
+        data: {...data}
+      });
+      let {password, ...rest} = profile;
+      return res.status(200).json(rest);
+    }catch(error){
+      console.error(error);
+      return res.sendStatus(400);
+    }
+  }

@@ -104,7 +104,8 @@ exports.getEmployeeMandatory = async (req, res) => {
         User:{
           select:{
             id: true,
-            name: true
+            name: true,
+            displayName: true
           }
         }
       }
@@ -325,6 +326,7 @@ exports.getEmployeeByEntity = async (req, res)=>{
             name: true,
             email: true,
             phone: true,
+            displayName: true,
             profile_picture: true,
             gender: true,
             niu: true,

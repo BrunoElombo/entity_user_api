@@ -8,6 +8,7 @@ userRoutes.get('/', verifyToken, userController.getAllUsers);
 userRoutes.get('/account', verifyToken, userController.getUser);
 userRoutes.get('/:id', verifyToken, userController.getUser);
 userRoutes.post('/', validateUser, userController.createUser);
+userRoutes.patch('/update/:id', userController.updateProfile);
 userRoutes.delete('/:id', userController.deleteUser);
 
 
