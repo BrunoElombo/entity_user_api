@@ -34,6 +34,7 @@ const fileRoutes = require("./routes/file");
 const operatorRoutes = require("./routes/operatorRoutes");
 const accountRoutes = require("./routes/accountRoutes");
 const swaggerJsdoc = require('swagger-jsdoc');
+const {logger} = require('./middlewares/logEvents');
 const swaggerUi = require('swagger-ui-express');
 const {swaggerOptions} = require('./config/swagger');
 
@@ -41,10 +42,15 @@ const {swaggerOptions} = require('./config/swagger');
 
 const app = express();
 
+/**
+ * Logs middlewares
+ */
+app.use(logger);
+
 const options = {
     key: fs.readFileSync(path.join(__dirname, 'cert.key')),
     cert: fs.readFileSync(path.join(__dirname, 'cert.crt'))
-  };
+};
 
   
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -64,6 +70,7 @@ app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something went wrong!');
 });
+
 
 app.use(cors());
 app.use(bodyParser.json());

@@ -5,23 +5,23 @@ const prisma = new PrismaClient();
 exports.getAllDepartments = async (userId) => {
 
   try{
-    let user = await prisma.user.findUnique({
-      where: {id: userId.id}
-    });
-    if(user.is_staff){
-      return await prisma.department.findMany();      
-    }
-    
-    let employee = await prisma.employee.findUnique({
-      where: {id: userId.id},
-      select:{
-        entity: true,
-        Departement: true,
+    // let employee = await prisma.employee.findUnique({
+    //   where: {id: userId.id, is_active: true},
+    //   include:{
+    //     entity: true,
+    //     Departement: true,
+    //   }
+    // })
+
+    let departments = await prisma.department.findMany({
+      where:{
+        // id_entity: employee.id_entity
+        isActive: true,
       }
     })
+    return departments
   }catch(error){
-    console.log(error.message);
-    return error;
+    throw new Error(error)
   }
 };
 

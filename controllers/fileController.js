@@ -31,7 +31,7 @@ exports.uploadFile = (req, res) => {
         return {
           filename: file.filename,
           filePath,
-          url: `http://${process.env.ADDRESS}:${process.env.PORT}/file/download/${path.basename(filePath)}`,
+          url: `http://${process.env.ADDRESS}:${process.env.PORT}/api/file/download/${path.basename(filePath)}`,
         };
       });
   
@@ -76,13 +76,13 @@ exports.toExcel=async(req, res)=>{
     
     
     
-    res.json({ fileUrl: `http://${process.env.ADDRESS}:${process.env.PORT}/file/download/${path.basename(filePath)}` });
+    res.json({ fileUrl: `http://${process.env.ADDRESS}:${process.env.PORT}/api/file/download/${path.basename(filePath)}` });
 }
 
 exports.download=async (req, res)=>{
     const filename = req.params.filename;   
     // const filePath = path.join(__dirname, '..', 'uploads', filename);
-    const filePath = path.join('C:\\Users\\belombo\\Documents\\DPWS project\\ENTITY_USER_API\\', 'uploads', filename);
+    const filePath = path.join(__dirname, '..', 'uploads', filename);
     console.log(filePath);
 
     if (fs.existsSync(filePath)) {

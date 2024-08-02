@@ -23,6 +23,7 @@ const jwt = require('jsonwebtoken');
               email: true,
               phone: true,
               profile_picture: true,
+              displayName: true,
               gender: true,
               niu: true,
               is_admin: true,

@@ -4,13 +4,13 @@ const departmentService = require('../services/departmentServices');
 const { createDepartmentSchema, updateDepartmentSchema } = require('../validations/departmentValidations');
 
 exports.getAllDepartments = async (req, res) => {
-  const { authorization } = req.headers
-  const userId = jwt.decode(authorization.split(' ')[1]);
+  // const { authorization } = req.headers;
+  // const userId = jwt.decode(authorization.split(' ')[1]);
   try {
-    const departments = await departmentService.getAllDepartments(userId);
-    res.status(200).json(departments);
+    const departments = await departmentService.getAllDepartments();
+    res.send(departments);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(404).json({ error: error.message });
   }
 };
 
