@@ -1,5 +1,6 @@
 const PrismaClient = require('@prisma/client').PrismaClient;
 const prisma = new PrismaClient();
+const employeeService = require('../services/employeeService');
 const jwt = require('jsonwebtoken');
 
 exports.getEmployeeHierarchy = async (req, res) => {
@@ -254,8 +255,7 @@ exports.getEmployeeControllers = async (req, res)=>{
 
     return res.status(200).send(employees);
   } catch (error) {
-    console.log(error)
-    return res.status(500).send(error.message);
+    return res.status(404).json({error :error.message});
   }
 }
   
@@ -299,9 +299,10 @@ exports.getEmployeeBanks = async (req, res)=>{
     // Convert map values to an array and send the response
     const result = Array.from(bankMap.values());
     return res.send(result);
-
+    
   } catch (error) {
     console.log(error);
+    return res.status(404).json({error: error.message});
   }
 }
 
@@ -343,3 +344,41 @@ exports.getEmployeeByEntity = async (req, res)=>{
     return res.status(500).send(error.message);
   }
 }
+
+
+exports.createEmployee = async (req, res) => {
+  try {
+    const employee = await employeeService.createEmployee(req.body);
+    res.status(201).json(employee);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+exports.getEmployeeProfile = async (req, res) => {
+  try {
+    const employee = await employeeService.getEmployeeById(req.employee.id);
+    res.json(employee);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+
+exports.updateEmployeeProfile = async (req, res) => {
+  let { id } = req.params
+  try {
+    const employee = await employeeService.updateEmployee(id, req.body);
+    res.json(employee);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+exports.deleteEmployee = async (req, res) => {
+  try {
+    await employeeService.deleteEmployee(req.employee.id);
+    res.status(204).send();
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};

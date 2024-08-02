@@ -1,9 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const EntityController = require('../controllers/entityController');
-const verifyToken = require("../middlewear/verifyJWT");
+const verifyToken = require("../middlewares/verifyJWT");
+const { validateEntity, validateEntityUpdate } = require('../validations/employeeValidation')
 
 // CRUD operations for Entity
+router.post('/', validateEntity, EntityController.createEntity);
+router.get('/', EntityController.getAllEntities);
+router.get('/:id', EntityController.getEntityById);
+router.patch('/:id', validateEntityUpdate, EntityController.updateEntity);
+router.delete('/:id', EntityController.deleteEntity);
+
 router.get('/', verifyToken, EntityController.getAllEntities);
 router.get('/all', verifyToken, EntityController.ListAllEntities);
 router.get('/:id',  verifyToken, EntityController.getEntityById);

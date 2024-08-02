@@ -1,6 +1,6 @@
 const express = require("express");
 const fileRoutes = express.Router();
-const verifyJWT = require("../middlewear/verifyJWT");
+const verifyJWT = require("../middlewares/verifyJWT");
 
 const {uploadFile, toExcel, download, upload} = require("../controllers/fileController");
 

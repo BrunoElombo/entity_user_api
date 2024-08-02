@@ -11,8 +11,8 @@ const generateToken = (user) => {
 };
 
 exports.login = async (req, res) => {
-  const { username, password, rememberMe } = req.body;
-
+  const { username, password } = req.body;
+  console.log({ username, password });
   try {
     const user = await prisma.user.findUnique({ where: { name:username } });
     
@@ -27,13 +27,9 @@ exports.login = async (req, res) => {
 
     const token = generateToken(user);
 
-    if (rememberMe) {
-      // Implement remember me logic
-    }
-
     return res.status(200).json({ token });
   } catch (error) {
     console.error(error.message);
-    return res.status(500).json({ message: error.message });
+    return res.status(400).json({ message: error.message });
   }
 };

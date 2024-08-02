@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const externalEntityController = require('../controllers/externalEntityController');
-const verifyToken = require("../middlewear/verifyJWT");
+const verifyToken = require("../middlewares/verifyJWT");
 
 // CRUD operations for Entity
 router.get('/', verifyToken, externalEntityController.getAllEntities);

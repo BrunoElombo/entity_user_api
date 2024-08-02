@@ -1,10 +1,13 @@
-// controllers/departmentController.js
+const jwt =require('jsonwebtoken');
+
 const departmentService = require('../services/departmentServices');
 const { createDepartmentSchema, updateDepartmentSchema } = require('../validations/departmentValidations');
 
 exports.getAllDepartments = async (req, res) => {
+  const { authorization } = req.headers
+  const userId = jwt.decode(authorization.split(' ')[1]);
   try {
-    const departments = await departmentService.getAllDepartments();
+    const departments = await departmentService.getAllDepartments(userId);
     res.status(200).json(departments);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -26,11 +29,7 @@ exports.getDepartmentById = async (req, res) => {
 
 exports.createDepartment = async (req, res) => {
   try {
-    const { error, value } = createDepartmentSchema.validate(req.body);
-    if (error) {
-      return res.status(400).json({ error: error.details[0].message });
-    }
-    const department = await departmentService.createDepartment(value);
+    const department = await departmentService.createDepartment(req.body);
     res.status(201).json(department);
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -1,24 +1,22 @@
 // services/departmentService.js
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-const jwt =require('jsonwebtoken');
 
-exports.getAllDepartments = async () => {
-  const { authorization } = req.header
-  const userId = jwt.decode(authorization.split(' ')[1]);
+exports.getAllDepartments = async (userId) => {
+
   try{
     let user = await prisma.user.findUnique({
-      where: {id: userId}
+      where: {id: userId.id}
     });
     if(user.is_staff){
       return await prisma.department.findMany();      
     }
     
     let employee = await prisma.employee.findUnique({
-      where: {id: userId},
+      where: {id: userId.id},
       select:{
         entity: true,
-        department: true,
+        Departement: true,
       }
     })
   }catch(error){
@@ -33,9 +31,7 @@ exports.getDepartmentById = async (id) => {
       id,
     },
     include: {
-      User: true,
-      Entity: true,
-      employee: true,
+      Entity: true
     },
   });
 };

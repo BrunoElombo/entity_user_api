@@ -10,11 +10,7 @@ const EntityController = {
     try {
       const entity = req.body;
       const createdEntity = await prisma.entity.create({
-        data: entity,
-        include: {
-          department: true,
-          role: true
-        }
+        data: entity
       });
       res.status(201).json(createdEntity);
     } catch (error) {
@@ -125,32 +121,14 @@ const EntityController = {
       const employee = await prisma.employee.findUnique({
         where: {
           id_user: userId,
-        },
-        include: {
-          User: {
-            select:{
-              id: true,
-              name: true,
-              email: true,
-              phone: true,
-              profile_picture: true,
-              gender: true,
-              niu: true,
-              is_admin: true,
-              is_staff: true
-            }
-          },
-          entity:true,
-          role:true,
-          Function: true,
-          Departement:true
-        },
+        }
       });
-  
-      return res.status(200).json(employee);
+
+      const entities = await prisma.entity.findMany({});
+      return res.status(200).json(entities);
     } catch (error) {
       console.error('Error fetching employee entities:', error);
-      res.status(500).json({ error: 'Internal server error' });
+      res.status(404).json({ error: error.message });
     }
   },
 
@@ -180,13 +158,25 @@ const EntityController = {
 
       const userInfo = await prisma.user.findUnique({
         where:{id: userId},
-        omit:{
-          password: true
-        },
       });
 
       const employeeInfo = await prisma.employee.findUnique({
-        where: {id_user:userInfo.id}
+        where: {id_user:userInfo.id},
+        select:{
+          User: {
+            select:{
+              id: true,
+              name: true,
+              email: true,
+              phone: true,
+              profile_picture: true,
+              gender: true,
+              niu: true,
+              is_admin: true,
+              is_staff: true
+            }
+          }
+        }
       })
 
       const memberInfo = {
@@ -497,13 +487,5 @@ const EntityController = {
 
 };
 
-
-const getEmployeesByRole=async (res, req)=>{
-
-}
-
-const getEmployeeByFunction = async (res, req)=>{
-    
-}
 
 module.exports = EntityController;

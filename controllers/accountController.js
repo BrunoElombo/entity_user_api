@@ -1,63 +1,55 @@
-const PrismaClient = require('@prisma/client').PrismaClient;
-const prisma = new PrismaClient();
-const { AccountType } = require('@prisma/client');
-const jwt = require('jsonwebtoken');
+// controllers/accountController.js
+const accountService = require('../services/accountService');
 
-exports.getAllEntityAccounts=async(req, res)=>{
-    // Get the user tokens
-    const decodedToken = jwt.decode(req.headers.authorization.split(' ')[1]);
-    const userId = decodedToken.id;
+exports.createAccount = async (req, res) => {
+  try {
+    const account = await accountService.createAccount(req.body);
+    res.status(201).json(account);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 
-    // Get the query parameters "types"
-    let  { type, operator } = req.query;
+exports.getAllAccounts = async (req, res) => {
+  // Get the query parameters "types"
+  let  { type } = req.query;
 
-    try {
-        let employee = await prisma.employee.findUnique({
-            where:{id_user: userId}
-        });
-        let idEntity = employee.id_entity;
-
-        if(type){
-            let account = await getAccountByType(idEntity, type);
-            return res.send(account);
-        }
-
-        if(operator){
-            let account = await getAccountByOperator(idEntity, operator);
-            return res.send(account);
-        }
-
-        let account = await prisma.account.findMany({
-            where: {idEntity: idEntity}
-        });
-
-        return res.send(account);
-
-    } catch (error) {
-        console.log(error);
-        return res.send(error);
+  // get the accounts by 
+  try {
+    if(type){
+      let account = await accountService.getAccountByType(req.entity, type);
+      return res.send(account);
     }
+    const accounts = await accountService.getAllAccounts();
+    res.json(accounts);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
 
-}
+exports.getAccountById = async (req, res) => {
+  try {
+    const account = await accountService.getAccountById(req.params.id);
+    res.json(account);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
 
+exports.updateAccount = async (req, res) => {
+  try {
+    const account = await accountService.updateAccount(req.params.id, req.body);
+    res.json(account);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 
-
-
-const getAccountByType = async (idEntity, type)=>{
-    try{
-        let accountType = type.toUpperCase();
-        let operator = await prisma.operator.findMany({
-            where:{
-                type: accountType
-            }
-        });
-
-        let account = await prisma.account.findMany({
-            where:{idOperator: operator.id, idEntity: idEntity}
-        });
-
-        return account;
-    }catch(e){
-        throw new Error(e.message);
-    }
-}
+exports.deleteAccount = async (req, res) => {
+  try {
+    await accountService.deleteAccount(req.params.id);
+    res.status(204).send();
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};

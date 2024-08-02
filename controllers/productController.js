@@ -28,28 +28,24 @@ exports.createProduct = async (req, res) => {
     res.json(product);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(400).json({ error: error.message });
   }
 };
 
 // Controller for retrieving all products
 exports.getAllProducts = async (req, res) => {
   try {
-    const decodedToken = jwt.decode(req.headers.authorization.split(' ')[1]);
-    const userId = decodedToken.id;
-    const employee = await prisma.employee.findUnique({
-        where:{id_user: userId},
-    });
+    // const decodedToken = jwt.decode(req.headers.authorization.split(' ')[1]);
+    // const userId = decodedToken.id;
+    // const employee = await prisma.employee.findUnique({
+    //     where:{id_user: userId},
+    // });
     
-    const products = await prisma.product.findMany({
-        where:{
-            id_entity: employee.id_entity
-        }
-    });
+    const products = await prisma.product.findMany({});
     res.json(products);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(404).json({ error: error.message });
   }
 };
 
@@ -66,7 +62,7 @@ exports.getProductById = async (req, res) => {
     res.json(product);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(404).json({ error: error.message });
   }
 };
 
@@ -87,7 +83,7 @@ exports.updateProduct = async (req, res) => {
     res.json(product);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(400).json({ error: error.message });
   }
 };
 
@@ -101,6 +97,6 @@ exports.deleteProduct = async (req, res) => {
     res.json({ message: 'Product deleted successfully' });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(404).json({ error: error.message });
   }
 };

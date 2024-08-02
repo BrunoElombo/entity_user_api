@@ -1,6 +1,6 @@
 const express = require('express');
 const operatorRouter = express.Router();
-const verifyJWT = require("../middlewear/verifyJWT");
+const verifyJWT = require("../middlewares/verifyJWT");
 const { getAllOperators, getOperatorById, getOperatorAccounts } = require('../controllers/operatorsController');
 
 

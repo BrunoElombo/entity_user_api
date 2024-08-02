@@ -8,22 +8,22 @@ exports.getAllOperators= async (req, res)=>{
     const userId = decodedToken.id;
 
     try {
-        let response = await prisma.Operator.findMany({
+        let response = await prisma.operator.findMany({
             where:{isActive: true}
         });
 
         return res.send(response);
 
     } catch (error) {
-        return res.status(500).send(error.message);
+        return res.status(404).json({error: error.message});
     }
 }
 
 exports.getOperatorById= async(req, res)=>{
-    let id = req.params.id;
+    let {id} = req.params;
 
-    const operator = await prisma.Operator.findUnique({
-        where:{isActive: true, id: id}
+    const operator = await prisma.operator.findUnique({
+        where:{isActive: true, id}
     });
 
     return res.send(operator);
@@ -42,7 +42,7 @@ exports.getOperatorAccounts= async (req, res)=>{
         })
 
         // Get operators by id
-        const operator = await prisma.Operator.findUnique({
+        const operator = await prisma.operator.findUnique({
             where:{isActive: true, id: id}
         });
 

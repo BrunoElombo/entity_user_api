@@ -1,23 +1,38 @@
 require("dotenv").config();
+const fs = require('fs');
+const path = require('path');
+const https = require('https');
 
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const userRoutes = require("./routes/user");
 const authRoutes = require("./routes/auth");
-const employeeRoutes = require("./routes/employee");
-const entitiesRoutes = require("./routes/entities");
-const externalEntitiesRoutes = require("./routes/externalEntity");
-const sitesRoutes = require("./routes/site");
-const productRoutes = require("./routes/product");
-const bankRoutes = require("./routes/bank");
-const departmentRoutes = require("./routes/department");
-const cashDeskRoutes = require("./routes/cashDesk");
-const currencyRoutes = require("./routes/currency");
+const employeeRoleRoutes = require('./routes/employeeRoleRoutes');
+const externalEntityRoutes = require('./routes/externalEntityRoutes');
+const refreshRoutes = require('./routes/refreshRoutes');
+const roleRoutes = require('./routes/roleRoutes');
+const functionRoutes = require('./routes/functionRoutes');
+const associateRoutes = require('./routes/associateRoutes');
+const echelonCategoryRoutes = require('./routes/echelonCategoryRoutes');  
+const gradeRoutes = require('./routes/gradeRoutes');
+const entityRoutes = require('./routes/entityRoutes');
+const typeEntityRoutes = require('./routes/typeEntityRoutes');
+const typeRoutes = require('./routes/typeRoutes');
+const currencyCutsRoutes = require('./routes/currencyCutsRoutes');
+const employeeRoutes = require("./routes/employeeRoutes");
+const entitiesRoutes = require("./routes/entityRoutes");
+// const externalEntitiesRoutes = require("./routes/externalEntityRoutes");
+const sitesRoutes = require("./routes/siteRoutes");
+const productRoutes = require("./routes/productRoutes");
+const bankRoutes = require("./routes/bankRoutes");
+const bankAccountRoutes = require("./routes/bankAccountRoutes");
+const departmentRoutes = require("./routes/departmentRoutes");
+const cashDeskRoutes = require("./routes/cashDeskRoutes");
+const currencyRoutes = require("./routes/currencyRoutes");
 const fileRoutes = require("./routes/file"); 
-const operatorRoutes = require("./routes/operator");
-const accountRoutes = require("./routes/account");
-const path = require('path');
+const operatorRoutes = require("./routes/operatorRoutes");
+const accountRoutes = require("./routes/accountRoutes");
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const {swaggerOptions} = require('./config/swagger');
@@ -25,6 +40,13 @@ const {swaggerOptions} = require('./config/swagger');
 
 
 const app = express();
+
+const options = {
+    key: fs.readFileSync(path.join(__dirname, 'cert.key')),
+    cert: fs.readFileSync(path.join(__dirname, 'cert.crt'))
+  };
+
+  
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/static', express.static(path.join(__dirname, 'public')));
 
@@ -43,7 +65,7 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something went wrong!');
 });
 
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(bodyParser.json());
 
 app.get("/", (req, res)=>{
@@ -52,23 +74,53 @@ app.get("/", (req, res)=>{
 });
 
 app.use("/api", authRoutes);
-app.use("/account", accountRoutes);
-app.use("/operators", operatorRoutes);
-app.use("/users", userRoutes);
-app.use("/employees", employeeRoutes);
-app.use("/entities",entitiesRoutes);
-app.use("/external_entities",externalEntitiesRoutes);
-app.use("/sites",sitesRoutes);
-app.use("/products", productRoutes);
-app.use("/banks", bankRoutes);
-app.use("/departments", departmentRoutes);
-app.use("/cash-desk", cashDeskRoutes);
-app.use("/currencies", currencyRoutes);
-app.use("/file", fileRoutes);
+// app.use("/api/account", accountRoutes);
+app.use("/api/operators", operatorRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/employees", employeeRoutes);
+app.use("/api/entities",entityRoutes);
+app.use("/api/external-entities",externalEntityRoutes);
+app.use("/api/sites",sitesRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/banks", bankRoutes);
+app.use("/api/bank-account", bankAccountRoutes);
+app.use("/api/departments", departmentRoutes);
+app.use("/api/cash-desk", cashDeskRoutes);
+app.use("/api/currencies", currencyRoutes);
+app.use("/api/file", fileRoutes);
+app.use("/api", authRoutes);
+app.use("/api/refresh", refreshRoutes);
+// app.use('/api/banks', bankRoutes);
+// app.use("/api/users", userRoutes);
+// app.use("/api/employees", employeeRoutes);
+app.use('/api/roles', roleRoutes);
+app.use('/api/functions', functionRoutes);
+app.use('/api/associates', associateRoutes);
+app.use('/api/echelon-categories', echelonCategoryRoutes);
+app.use('/api/grades', gradeRoutes);
+// app.use('/api/entities', entityRoutes);
+app.use('/api/external-entities', externalEntityRoutes);
+app.use('/api/type-entities', typeEntityRoutes);
+app.use('/api/types', typeRoutes);
+app.use('/api/employee-roles', employeeRoleRoutes);
+app.use('/api/accounts', accountRoutes);
+// app.use("/api/operators", operatorRoutes);
+app.use("/api/entities",entitiesRoutes);
+// app.use("/api/external_entities",employeeRoleRoutes);
+// app.use("/api/sites",sitesRoutes);
+// app.use("/api/departments", departmentRoutes);
+app.use("/api/products", productRoutes);
+// app.use("/api/currencies", currencyRoutes);
+app.use('/api/currency-cuts', currencyCutsRoutes);
+// app.use("/api/cash-desk", cashDeskRoutes);
+app.use("/api/file", fileRoutes);
+// app.all('*', notFoundeHandler);
 
-app.listen(process.env.PORT, ()=>{
-    console.log(`Server listening on http://localhost:${process.env.PORT || 5000}`)
-})
-// app.listen(process.env.PORT, process.env.ADDRESS, ()=>{
-//     console.log(`Server listening on http://${process.env.ADDRESS}:${process.env.PORT}`)
-// })
+app.listen(process.env.PORT, process.env.ADDRESS, ()=>{
+    console.log(`Server listening on http://${process.env.ADDRESS}:${process.env.PORT}`)
+});
+
+// Start HTTPS server
+// https.createServer(options, app).listen(process.env.PORT, process.env.ADDRESS, () => {
+//     console.log(`HTTPS server running on https://${process.env.ADDRESS}:${process.env.PORT}`);
+//   });

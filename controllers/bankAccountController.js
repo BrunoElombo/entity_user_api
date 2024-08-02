@@ -1,7 +1,35 @@
 const PrismaClient = require('@prisma/client').PrismaClient;
+const bankAccountService = require('../services/bankAccountService');
 const prisma = new PrismaClient();
 const jwt = require('jsonwebtoken');
 
+
+
+exports.createBankAccount = async (req, res) =>{
+    try{
+        let bankAccount = bankAccountService.createBankAccount(req.body);
+        res.json(bankAccount);
+    }catch(error){
+        return res.status(400).json({error: error.message});
+    }
+}
+exports.getAllBankAccounts = async (req, res) =>{
+    try{
+        let bankAccounts = await bankAccountService.getAllBankAccounts();
+        return res.json(bankAccounts);
+    }catch(error){
+        return res.sendStatus(404);
+    }
+}
+exports.getBankAccountById = async (req, res) =>{
+
+}
+exports.updateBankAccount = async (req, res) =>{
+
+}
+exports.deleteBankAccount = async (req, res) =>{
+
+}
 
 
 exports.getBankByEntity = async (req, res) =>{
@@ -29,7 +57,7 @@ exports.getBankByEntity = async (req, res) =>{
         return res.status(200).send(entityBanks)
 
     } catch (error) {
-        return res.status(500).json({error: "Internal Server Error"});
+        return res.status(400).json({error: error.message});
     }
 }
 

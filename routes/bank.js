@@ -1,6 +1,6 @@
 const express = require("express");
 const bankRouter = express.Router();
-const verifyJWT = require("../middlewear/verifyJWT");
+const verifyJWT = require("../middlewares/verifyJWT");
 const { getEmployeeBanks, getEntityBanks } = require("../controllers/bankController")
 
 bankRouter.get("/", verifyJWT, getEmployeeBanks);
