@@ -54,7 +54,6 @@ const options = {
 
   
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use('/static', express.static(path.join(__dirname, 'public')));
 
 // Initialize swagger-jsdoc -> returns validated swagger spec in json format
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
