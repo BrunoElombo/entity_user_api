@@ -98,13 +98,45 @@ const jwt = require('jsonwebtoken');
   exports.updateProfile = async (req, res) =>{
     try{
       let {id} = req.params
+      let hashedPassword;
       if(!id) return res.sendStatus(400);
       let data = req.body;
+      if(data.password){
+        hashedPassword = await bcrypt.hash(data.password, 10);
+      }
       let profile = await prisma.user.update({
         where:{id, is_active: true},
-        data: {...data}
+        data: {...data, password : hashedPassword},
       });
-      let {password, ...rest} = profile;
+
+      let userInfo = await prisma.employee.findUnique({
+        where:{id_user: profile.id},
+        include: {
+          User: {
+            select:{
+              id: true,
+              name: true,
+              email: true,
+              phone: true,
+              profile_picture: true,
+              displayName: true,
+              gender: true,
+              niu: true,
+              is_admin: true,
+              is_staff: true
+            }
+          },
+          entity:{
+            include:{
+              site:true
+            }
+          },
+          role:true,
+          Function: true,
+          Departement:true
+        }
+      })
+      let {password, ...rest} = userInfo;
       return res.status(200).json(rest);
     }catch(error){
       console.error(error);
