@@ -19,14 +19,21 @@ const storage = multer.diskStorage({
 
 });
 // exports.upload = multer({ dest: 'uploads/' });
-exports.upload = multer({ storage, limits: { fileSize: 1000000 } });
+exports.upload = multer({ 
+  storage, 
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    // You can set up file type restrictions here if needed
+    cb(null, true);
+  }
+ });
 
 exports.uploadFile = (req, res) => {
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).json({ message: 'No files uploaded.' });
+  }
+
     try {
-      if (!req.files || Object.keys(req.files).length === 0) {
-        return res.status(400).json({ message: 'No files uploaded.' });
-      }
-  
       const uploadedFiles = req.files.map((file) => {
         const filePath = path.join(__dirname, '..', 'uploads', file.filename);
         return {
@@ -40,7 +47,7 @@ exports.uploadFile = (req, res) => {
       return res.send(uploadedFiles);
     } catch (error) {
       console.error('Error uploading files:', error);
-      res.status(500).json({ message: 'Error uploading files.' });
+      res.status(400).json({ message: 'Error uploading files.' });
     }
 };
   
