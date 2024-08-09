@@ -140,6 +140,6 @@ const jwt = require('jsonwebtoken');
       return res.status(200).json(rest);
     }catch(error){
       console.error(error);
-      return res.sendStatus(400);
+      return res.status(400).send(error);
     }
   }
