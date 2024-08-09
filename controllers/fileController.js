@@ -95,7 +95,7 @@ exports.download=async (req, res)=>{
         res.download(filePath, err => {
             if (err) {
                 console.error('File download error:', err);
-                res.status(500).send('File download error.');
+                res.status(400).send('File download error.');
             }
         });
     } else {
