@@ -123,7 +123,7 @@ app.use("/api/file", fileRoutes);
 // app.all('*', notFoundeHandler);
 
 app.listen(process.env.PORT, process.env.ADDRESS, ()=>{
-    console.log(`Server listening on http://${process.env.ADDRESS}:${process.env.PORT}`)
+    console.log(`Server listening on http://${process.env.ADDRESS}`)
 });
 
 // Start HTTPS server

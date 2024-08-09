@@ -18,12 +18,12 @@ const storage = multer.diskStorage({
     },
 
 });
-// exports.upload = multer({ dest: 'uploads/' });
+
+
 exports.upload = multer({ 
   storage, 
   limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    // You can set up file type restrictions here if needed
     cb(null, true);
   }
  });
@@ -39,11 +39,9 @@ exports.uploadFile = (req, res) => {
         return {
           filename: file.filename,
           filePath,
-          url: `http://${process.env.ADDRESS}:${process.env.PORT}/api/file/download/${path.basename(filePath)}`,
+          url: `http://${process.env.ADDRESS}/api/file/download/${path.basename(filePath)}`,
         };
       });
-  
-      console.log(uploadedFiles)
       return res.send(uploadedFiles);
     } catch (error) {
       console.error('Error uploading files:', error);
