@@ -7,18 +7,19 @@ require("dotenv").config();
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const uploadFile = path.join(__dirname,'..', 'uploads');
-        if(fs.existsSync(uploadFile)){
-            fs.mkdirSync(uploadFile, {recursive: true});
-        }
-        cb(null, uploadFile);
-      },
-      filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
-      }    
+      const uploadFile = path.join(__dirname,'..', 'uploads');
+      if(fs.existsSync(uploadFile)){
+          fs.mkdirSync(uploadFile, {recursive: true});
+      }
+      cb(null, uploadFile);
+    },
+    filename: (req, file, cb) => {
+      cb(null, Date.now() + path.extname(file.originalname));
+    },
+
 });
 // exports.upload = multer({ dest: 'uploads/' });
-exports.upload = multer({ storage });
+exports.upload = multer({ storage, limits: { fileSize: 1000000 } });
 
 exports.uploadFile = (req, res) => {
     try {

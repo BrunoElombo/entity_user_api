@@ -17822,3 +17822,4 @@
 20240809	16:06:47	018ea7e5-4ddd-4f29-bef5-1bb3b93b3f94	GET	undefined	/api/entities/?role=management_controller
 20240809	16:06:48	47ac9a1b-1573-4ec5-8a21-5aee1005730b	GET	undefined	/api/employees/4c7c13f6-e497-439b-9c1d-88516ee2ddeb/entities/
 20240809	16:06:51	b4dd0166-6dd5-4310-97cd-3a609d1914c3	GET	undefined	/api/employees/hierarchy/
+20240809	16:30:54	01827df9-1487-4012-a7b1-41044f9d48b1	POST	undefined	/api/file/upload
