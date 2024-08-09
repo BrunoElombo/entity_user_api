@@ -6,7 +6,7 @@ const siteController = require('../controllers/siteController');
 const { validateSite, validateSiteUpdate } = require('../validations/siteValidation');
 
 router.post('/', validateSite, siteController.createSite);
-router.get('/', siteController.getAllSites);
+router.get('/', verifyJWT, siteController.getEmployeeSites);
 router.get('/:id', siteController.getSiteById);
 router.patch('/:id', validateSiteUpdate, siteController.updateSite);
 router.delete('/:id', siteController.deleteSite);

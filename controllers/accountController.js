@@ -17,7 +17,7 @@ exports.getAllAccounts = async (req, res) => {
   // get the accounts by 
   try {
     if(type){
-      let account = await accountService.getAccountByType(req.entity, type);
+      let account = await accountService.getAccountByType(type);
       return res.send(account);
     }
     const accounts = await accountService.getAllAccounts();

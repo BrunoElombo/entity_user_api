@@ -32,17 +32,18 @@ exports.getEmployeeSites = async (req, res)=>{
           });
           return res.status(200).json(sites);
         }
-
         const sites = await prisma.site.findMany({
           where:{id_entity: employee.id_entity, type: "HEADQUARTER"}
         });
         return res.status(200).json(sites);
-
       }
+
       const sites = await prisma.site.findMany({
         where:{id_entity: employee.id_entity, type: "HEADQUARTER"}
       });
+
       return res.status(200).json(sites);
+
     } catch (error) {
       console.log(error)
         return res.status(500).json({ error: 'Internal server error' });

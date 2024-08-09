@@ -5,6 +5,7 @@ const prisma = new PrismaClient();
 
 
 const generateToken = (user) => {
+  
   return jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
     expiresIn: '30d',
   });
@@ -12,7 +13,6 @@ const generateToken = (user) => {
 
 exports.login = async (req, res) => {
   const { username, password } = req.body;
-  console.log({ username, password });
   try {
     const user = await prisma.user.findUnique({ where: { name:username } });
     
